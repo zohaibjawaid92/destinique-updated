@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Destinique</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="https://destinique.com/favicon.ico">
+
+        <!-- LOCAL Montserrat (recommended for scores >95) -->
+        <link rel="preload" href="assets/fonts/montserrat-regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="assets/fonts/montserrat-semibold.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="assets/fonts/fonts.css">
+
+        <!-- Preload LCP logo -->
+        <link rel="preload" as="image" href="assets/dest-images/assets/logo.webp" fetchpriority="high"/>
+        <!--
+        <link rel="preload" as="image" type="image/webp" href="assets/website_images/home/banner/banner_404.webp" fetchpriority="high">
+        -->
+
+        <!-- Preload Bootstrap JS for faster loading when triggered -->
+        <link rel="preload" href="/assets/bootstrap/bootstrap.bundle.min.js" as="script">
+
+        <link rel="preconnect" href="https://www.googletagmanager.com">
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+        <!-- Do NOT preload GA -->
+        <!-- GA will be dynamically loaded on client-side -->
+
+        <!-- Partytown Init -->
+        <script>
+          window.partytown = {
+            lib: "/partytown/",
+            debug: false,
+//            forward: ["dataLayer.push", "gtag"],
+// Remove GTM from forward since it will run in main thread
+            forward: [],
+            resolveUrl(url) {
+              // Exclude ALL GTM scripts from Partytown worker
+              if (url.href.includes("googletagmanager.com") ||
+                url.href.includes("google-analytics.com") ||
+                url.href.includes("gtag/js")) {
+                return { url: url.href, skipWorker: true };
+              }
+
+              if (url.href.includes("fbevents.js")) {
+                return { url: url.href, skipWorker: true };
+              }
+              return url;
+            }
+          };
+        </script>
+        <script src="/partytown/partytown.js"></script>
+        <!-- Facebook Pixel via Partytown -->
+
+        <!-- GA bootstrap (runs inside worker) -->
+        <!-- <script type="text/partytown"> -->
+        <!-- window.dataLayer = window.dataLayer || []; -->
+        <!-- window.gtag = function () { dataLayer.push(arguments); }; -->
+        <!-- </script> -->
+
+        <!-- GA4 Loader -->
+        <!-- <script type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=G-122QQMGN2V"></script> -->
+
+        <!-- GA4 Config -->
+        <!-- <script type="text/partytown"> -->
+        <!-- if (location.hostname === "destinique.com") { -->
+        <!--  gtag('js', new Date()); -->
+        <!-- gtag('config', 'G-122QQMGN2V', { send_page_view: true }); -->
+        <!-- } -->
+        <!-- </script> -->
+
+        <!-- ===== CRITICAL CHANGE: MOVE ALL GTM CODE OUTSIDE PARTYTOWN ===== -->
+      <script>
+        (function() {
+          const GTM_ID = 'G-122QQMGN2V';
+          const hostname = window.location.hostname;
+          const allowedDomains = ['destinique.com', 'localhost'];
+          const isDev = hostname.includes('dev.');
+          const isLocalOrDev = hostname === 'localhost' || isDev;
+          const log = isLocalOrDev ? console.log : () => {};
+
+          // Skip if not allowed domain
+          if (!allowedDomains.includes(hostname) && !isDev) {
+            log('GTM: Skipping for domain:', hostname);
+            return;
+          }
+
+          // Minimal, non-blocking dataLayer init
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function() {
+            window.dataLayer.push(arguments);
+          };
+
+          // Queue for delayed page views and events
+          window._gtmQueue = window._gtmQueue || [];
+
+          // Override gtag to queue events
+          const originalGtag = window.gtag;
+          window.gtag = function() {
+            if (window._gtmLoaded) {
+              originalGtag.apply(this, arguments);
+            } else {
+              window._gtmQueue.push(arguments);
+              log('GTM: Event queued', arguments[0]);
+            }
+          };
+
+          // ============ CRITICAL: TRACK INITIAL PAGE VIEW ============
+          function trackInitialPageView() {
+            if (document.readyState === 'complete') {
+              // Document is ready, track immediately
+              window.gtag('config', GTM_ID, {
+                page_path: window.location.pathname,
+                page_title: document.title,
+                send_page_view: false
+              });
+              log('GTM: Initial page view queued (document ready)');
+            } else {
+              // Wait for document to be ready
+              window.addEventListener('load', () => {
+                window.gtag('config', GTM_ID, {
+                  page_path: window.location.pathname,
+                  page_title: document.title,
+                  send_page_view: false
+                });
+                log('GTM: Initial page view queued (after load event)');
+              }, { once: true });
+            }
+          }
+
+          // Call it immediately after setting up gtag override
+          trackInitialPageView();
+          // ============ END CRITICAL SECTION ============
+
+          function loadGTM() {
+            if (window._gtmLoaded) return;
+            window._gtmLoaded = true;
+
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${GTM_ID}`;
+
+            script.onload = function() {
+              // CRITICAL: Set timestamp
+              originalGtag('js', new Date());
+
+              // Process queued events
+              if (window._gtmQueue && window._gtmQueue.length > 0) {
+                log(`GTM: Processing ${window._gtmQueue.length} queued events`);
+                window._gtmQueue.forEach(args => originalGtag.apply(window, args));
+                window._gtmQueue = [];
+              }
+
+              // Config (queued events already handled configs)
+              originalGtag('config', GTM_ID, {
+                send_page_view: false,
+                debug_mode: hostname !== 'destinique.com'
+              });
+
+              log('GTM: Fully loaded for', hostname);
+            };
+
+            document.head.appendChild(script);
+            log('GTM: Script injected');
+          }
+
+          // Optimized single interaction listener
+          let interactionTriggered = false;
+          function handleUserInteraction() {
+            if (!interactionTriggered) {
+              interactionTriggered = true;
+              log('GTM: Loading triggered by interaction');
+              loadGTM();
+            }
+          }
+
+          document.addEventListener('click', handleUserInteraction, {
+            once: true,
+            passive: true,
+            capture: true
+          });
+
+          // Load after 4 seconds (reduced from 5)
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+              if (!window._gtmLoaded) {
+                log('GTM: Loading via idle callback');
+                loadGTM();
+              }
+            }, { timeout: 4000 });
+          }
+          else {
+            setTimeout(() => {
+              if (!window._gtmLoaded) {
+                log('GTM: Loading via timeout');
+                loadGTM();
+              }
+            }, 4000);
+          }
+        })();
+      </script>
+    </head>
+    <body>
+        <noscript>
+          <img height="1" width="1"
+               style="display:none"
+               src="https://www.facebook.com/tr?id=1706147529981140&ev=PageView&noscript=1"/>
+        </noscript>
+
+        <app-root></app-root>
+        <script>
+          let bootstrapLoaded = false;
+
+          function loadBootstrap() {
+              if (bootstrapLoaded) return;
+              bootstrapLoaded = true;
+
+              const script = document.createElement('script');
+              script.src = '/assets/bootstrap/bootstrap.bundle.min.js';
+              script.defer = true;
+              script.async = true;
+
+              // Add error handling
+              script.onerror = () => {
+                console.warn('Bootstrap failed to load, retrying...');
+                loadBootstrapFallback();
+              };
+
+              script.onload = () => {
+                console.log('Bootstrap JS loaded successfully');
+                initBootstrapComponents();
+              };
+
+              document.body.appendChild(script);
+          }
+
+          function loadBootstrapFallback() {
+            // CDN fallback if local fails
+            const fallback = document.createElement('script');
+            fallback.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
+            fallback.integrity = 'sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz';
+            fallback.crossOrigin = 'anonymous';
+            fallback.defer = true;
+            document.body.appendChild(fallback);
+          }
+
+          function initBootstrapComponents() {
+            // Initialize any Bootstrap JS components that need it
+            // Tooltips, popovers, etc.
+            // const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            // if (tooltips.length > 0 && window.bootstrap) {
+            //   [...tooltips].forEach(el => new bootstrap.Tooltip(el));
+            // }
+          }
+
+          // Load when user interacts with UI
+          window.addEventListener('click', loadBootstrap, { once: true });
+          window.addEventListener('touchstart', loadBootstrap, { once: true });
+          window.addEventListener('scroll', loadBootstrap, { once: true });
+          window.addEventListener('keydown', loadBootstrap, { once: true });
+
+          // Optional: direct navbar click trigger
+          document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+              navbar.addEventListener('click', loadBootstrap, { once: true });
+            }
+          });
+
+          // Safety net: Load after 3 seconds if not already loaded
+          setTimeout(loadBootstrap, 3000);
+        </script>
+    </body>
+</html>

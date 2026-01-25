@@ -1,0 +1,185 @@
+<!-- MAIN NAVBAR -->
+<nav class="navbar navbar-expand-xl main-nav bg-dark navbar-dark">
+    <div class="container-fluid">
+
+        <!-- CONTACT -->
+        <div class="topbar justify-content-end align-items-center ps-4 text-white phone-contact">
+            <a href="https://wa.me/18503125400" target="blank" class="dest-call">
+                <img loading="lazy" decoding="async" class="nav-whatsapp-call img-fluid" src="assets/icons/phone-volume-solid.svg" alt="call">
+            </a>
+        </div>
+
+        <!-- LOGO -->
+        <a class="navbar-brand d-flex align-items-center" [routerLink]="['/']"
+           (click)="closeMobileMenu()">
+            <img src="assets/dest-images/assets/logo.webp"
+                 decoding="async"
+                 width="224"
+                 height="122"
+                 alt="Destinique"
+                 class="logo img-fluid"
+                 fetchpriority="high">
+        </a>
+
+        <!-- MOBILE TOGGLE -->
+        <button class="navbar-toggler" type="button"
+                (click)="isMenuCollapsed = !isMenuCollapsed"
+                [attr.aria-expanded]="!isMenuCollapsed"
+                aria-label="Toggle navigation">
+            <!-- Custom toggle icons -->
+            <img *ngIf="isMenuCollapsed" class="nav-bars-solid img-fluid" src="assets/icons/bars-staggered-solid.svg" alt="menu" loading="lazy" decoding="async">
+            <img *ngIf="!isMenuCollapsed" class="nav-xmark img-fluid" src="assets/icons/xmark-solid.svg" alt="close" loading="lazy" decoding="async">
+        </button>
+
+        <!-- MENU -->
+        <div class="navbar-collapse position-relative"
+             [class.collapse]="isMenuCollapsed"
+             [class.show]="!isMenuCollapsed">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/']" routerLinkActive="active"
+                       (click)="closeMobileMenu()">HOME</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/destinations']" routerLinkActive="active"
+                       (click)="closeMobileMenu()">DESTINATIONS</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/properties']" routerLinkActive="active"
+                       (click)="closeMobileMenu()">DESTINIQUE COLLECTION</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="active"
+                       (click)="closeMobileMenu()">CONTACT US</a>
+                </li>
+
+                <!-- DROPDOWN - FIXED -->
+                <li class="nav-item" ngbDropdown>
+                    <!-- Changed from <a> to <button> to prevent navigation -->
+                    <button class="nav-link dropdown-toggle btn btn-link" ngbDropdownToggle
+                            (click)="$event.preventDefault()">
+                        MORE
+                    </button>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <a [routerLink]="['/map']" class="dropdown-item" ngbDropdownItem
+                           (click)="closeMobileMenu()">MAP</a>
+                        <a [routerLink]="['/promotions']" class="dropdown-item" ngbDropdownItem
+                           (click)="closeMobileMenu()">PROMOS</a>
+                        <a target="_blank" href="https://blog.destinique.com" class="dropdown-item" ngbDropdownItem
+                           (click)="closeMobileMenu()">BLOG</a>
+                        <a [routerLink]="['/our-services']" class="dropdown-item" ngbDropdownItem
+                           (click)="closeMobileMenu()">LUXURY SERVICES</a>
+                        <a [routerLink]="['/testimonials']" class="dropdown-item" ngbDropdownItem
+                           (click)="closeMobileMenu()">TESTIMONIAL</a>
+                        <a [routerLink]="['/aboutus']" class="dropdown-item" ngbDropdownItem
+                           (click)="closeMobileMenu()">ABOUT US</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+                <li class="nav-item">
+                        <!-- TOP CONTACT BAR - Desktop only -->
+                        <div class="topbar d-flex justify-content-end align-items-center ps-4 py-2 text-white web-contact">
+                            <a href="https://wa.me/18503125400" target="blank" class="dest-call">
+                                <img class="nav-whatsapp img-fluid" src="assets/icons/whatsapp-brands-solid.svg" alt="whatsapp" loading="lazy" decoding="async"> +1-850-312-5400
+                            </a>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <form
+                              (ngSubmit)="search()"
+                              class="form-inline end-0"
+                              autocomplete="off"
+                            >
+                              <div class="input-group me-2">
+                                  <input [(ngModel)]="propertyNumber" name="propertyNumber" type="text" class="form-control nav-search-box" placeholder="SEARCH BY PROPERTY ID">
+                                  <button class="btn btn-success nav-search-btn" type="submit">
+                                      <img loading="lazy" decoding="async" class="nav-search img-fluid" src="assets/icons/magnifying-glass-solid.svg" alt="search">
+                                  </button>
+                              </div>
+                            </form>
+                          <!-- USER DROPDOWN - FIXED -->
+                          <div ngbDropdown class="dropdown" placement="bottom-end">
+                            <button type="button" class="btn btn-primary dropdown-toggle user-btn" ngbDropdownToggle
+                                    (click)="$event.preventDefault()">
+                              <!-- Show user initial when logged in -->
+                              <span *ngIf="isLoggedIn && userInitial" class="user-initial-badge">
+                                    {{ userInitial }}
+                                </span>
+                              <img *ngIf="!isLoggedIn || !userInitial" loading="lazy" decoding="async"
+                                   class="nav-profile img-fluid" src="assets/icons/circle-user-regular.svg" alt="profile">
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                              <!-- Show when logged in -->
+                              <ng-container *ngIf="isLoggedIn; else loginSection">
+                                <!-- User info header -->
+                                <div class="dropdown-header text-center">
+                                  <strong>{{ userFullName }}</strong>
+                                  <div class="small mt-1" *ngIf="userRole === 1">Administrator</div>
+                                  <div class="small mt-1" *ngIf="userRole === 2">Agent</div>
+                                  <div class="small mt-1" *ngIf="userRole === 3">Manager</div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" [routerLink]="['/my-profile']" ngbDropdownItem
+                                   (click)="closeMobileMenu()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                  </svg>
+                                  MY PROFILE
+                                </a>
+
+                                <!-- Show dashboard for admins/managers -->
+                                <a *ngIf="isAdmin()" class="dropdown-item" [routerLink]="['/admin/dashboard']" ngbDropdownItem
+                                   (click)="closeMobileMenu()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-speedometer2 me-2" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4M3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.39.39 0 0 0-.029-.518z"/>
+                                    <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10m8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3"/>
+                                  </svg>
+                                  DASHBOARD
+                                </a>
+
+                                <a class="dropdown-item text-danger" href="javascript:void(0)" ngbDropdownItem
+                                   (click)="logout(); $event.preventDefault()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                  </svg>
+                                  LOG OUT
+                                </a>
+                              </ng-container>
+
+                              <!-- Show when NOT logged in -->
+                              <ng-template #loginSection>
+                                <a class="dropdown-item" href="javascript:void(0)" ngbDropdownItem
+                                   (click)="openLoginModal(); $event.preventDefault()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right me-2" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                  </svg>
+                                  LOG IN
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0)" ngbDropdownItem
+                                   (click)="openRegisterModal(); $event.preventDefault()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus me-2" viewBox="0 0 16 16">
+                                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                                    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                  </svg>
+                                  REGISTER
+                                </a>
+                              </ng-template>
+                            </div>
+                          </div>
+                        </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

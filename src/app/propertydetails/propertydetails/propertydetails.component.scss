@@ -1,0 +1,1314 @@
+// ============================================
+// Variables
+// ============================================
+$primary-color: #378f86;
+$secondary-color: #33d286;
+$text-color: #000;
+$border-color: #dee2e6;
+$nav-tab-color: #95979d;
+
+// ============================================
+// Mixins
+// ============================================
+@mixin transition($property: all, $duration: 0.3s, $timing: ease-in-out) {
+    transition: $property $duration $timing;
+}
+
+@mixin mobile {
+    @media screen and (max-width: 767px) {
+        @content;
+    }
+}
+
+// ============================================
+// Tab Styles
+// ============================================
+.nav-link {
+    padding: 0px 0px !important;
+}
+.custom-tabset {
+    .nav-tabs {
+        border-bottom: 2px solid $border-color;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        // Scrollbar styling
+        &::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $primary-color;
+        }
+    }
+
+    .nav-item {
+        margin-bottom: -2px;
+        flex-shrink: 0;
+    }
+
+    .nav-tab-link {
+        color: $nav-tab-color;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-right: 12px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: 600;
+        background: transparent;
+        border: none;
+        position: relative;
+
+        &:hover {
+            color: $primary-color;
+            border-color: $primary-color;
+        }
+
+        &.active {
+            color: $primary-color;
+            border-color: $primary-color;
+            background: transparent;
+        }
+    }
+
+}
+
+// Tab content panels
+.tab-content-panel {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+// Navigation controls
+.tab-navigation-controls {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid $border-color;
+
+    .btn-outline-primary {
+        color: $primary-color;
+        border-color: $primary-color;
+
+        &:hover {
+            background-color: $primary-color;
+            color: white;
+        }
+
+        &:disabled {
+            color: #6c757d;
+            border-color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.5;
+
+            &:hover {
+                background-color: transparent;
+                color: #6c757d;
+            }
+        }
+    }
+
+    .current-tab-indicator .badge {
+        background-color: $primary-color;
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
+.amenities-content ul li {
+    color: #62646a;
+    float: left;
+    position: relative;
+    width: 33.333333%;
+    padding-right: 20px;
+    font-size: 18px;
+    font-weight: 300 !important;
+}
+@media (max-width: 992px) {
+    .amenities-content ul li {
+        width: 50%;
+    }
+}
+@media (max-width: 460px) {
+    .amenities-content ul li {
+        width: 100%;
+    }
+}
+// ============================================
+// Animations
+// ============================================
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ============================================
+// Base Styles
+// ============================================
+a:hover {
+    cursor: pointer;
+}
+h3, h4 {
+    color: #555;
+}
+.card {
+    border: 0px solid #ccc;
+    font-family: inherit;
+    color: $text-color;
+    border-radius: unset;
+}
+
+.shadow-lg {
+    box-shadow: 0 34px 21px -22px #00000026 !important;
+    border: 1px solid $border-color !important;
+    border-top: 0px solid !important;
+}
+
+.card-body {
+    padding: 1rem;
+    border-radius: unset;
+}
+
+.tab-pane {
+    padding: 0px;
+}
+
+.property-header-provider-name, h3 span {
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+}
+
+// Text styles
+.t-header {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 26px;
+    color: #555;
+}
+
+.t-text {
+    font-weight: 400;
+    font-size: 16px;
+    color: #62646a;
+    word-break: break-word;
+    line-height: 24px;
+}
+.p-description {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 18px;
+    font-weight: 300 !important;
+    word-wrap: break-word;
+    color: #62646a !important;
+}
+// List styles
+.list-group {
+    .fw-normal {
+        font-size: 1rem;
+        color: #62646a;
+    }
+
+    svg {
+        height: 20px;
+        top: -3px;
+        position: relative;
+    }
+}
+
+// Button styles
+.btn {
+    background-color: $primary-color;
+    border: none;
+    color: #fff;
+    border-color: $primary-color !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    border-radius: unset;
+    padding: 10px 12px;
+    box-shadow: 0 2px 6px 1px #1414147a;
+    @include transition;
+
+    &:hover {
+        background-color: #000;
+        color: $secondary-color;
+    }
+}
+
+// ============================================
+// Social Media Section
+// ============================================
+.property-details-s-media {
+    margin-top: 1rem;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: 300 !important;
+}
+
+.share-btn-container {
+    .social-svg {
+        border: 1px solid #000;
+        height: 45px;
+        border-radius: 50%;
+        padding: 10px;
+        color: #000;
+        margin-right: 8px;
+        margin-top: 3px;
+        margin-bottom: 1rem;
+        @include transition;
+
+        &:hover {
+            background-color: $primary-color !important;
+            border: 1px solid $primary-color !important;
+            color: #fff !important;
+        }
+    }
+}
+
+// ============================================
+// Property Rates Section
+// ============================================
+.property-rates {
+    .card-header {
+        background-color: #000;
+        color: #fff;
+        border-radius: unset;
+        height: 50px;
+        padding: 12px;
+    }
+
+    label {
+        display: inline-block;
+        font-weight: 400;
+        font-size: 15px;
+        text-transform: uppercase;
+        line-height: 1.5rem;
+        letter-spacing: .1em;
+    }
+}
+
+// Form controls
+.form-control {
+    background-color: #fff !important;
+    border-color: #dcdcdc !important;
+    border-width: 1px !important;
+    border-radius: 0 !important;
+    padding: .75rem .75rem .5rem .75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    padding-block-end: 8px !important;
+    padding-block-start: 12px !important;
+    padding-inline-end: 12px !important;
+    padding-inline-start: 12px !important;
+    @include transition(border-color box-shadow);
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.required:after {
+    content: "*";
+    color: red;
+}
+
+// ============================================
+// Modal Styles
+// ============================================
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+
+    &-dialog {
+        max-width: 500px;
+        margin: 0rem auto;
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 1rem);
+        max-width: fit-content;
+    }
+
+    &-content {
+        width: fit-content;
+        background-color: #fff;
+        max-height: 100vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 20px 0 rgba(0, 0, 0, .3);
+        border-radius: 0px;
+        border: 0px solid !important;
+    }
+
+    &-header {
+        background-color: $primary-color;
+        color: #fff;
+        padding: .8rem 1rem .8rem 3rem;
+        text-transform: uppercase;
+    }
+
+    &-body {
+        padding: 2rem 3rem !important;
+    }
+
+    .checkout-summary h6 {
+        color: #62646a !important;
+    }
+
+    label {
+        display: inline-block;
+        font-weight: 400;
+        font-size: 15px;
+        text-transform: uppercase;
+        line-height: 1.5rem;
+        letter-spacing: .1em;
+    }
+}
+// ============================================
+// Button Variations
+// ============================================
+.property-inquiry-btn {
+    width: 49.5%;
+}
+
+.book-now-btn {
+    width: 49.5%;
+    background-color: #e63946 !important;
+    border-color: #e63946 !important;
+    float: right;
+}
+
+// ============================================
+// Responsive Styles
+// ============================================
+@include mobile {
+    .custom-tabset {
+        .nav-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-link {
+            padding: 8px 10px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+    }
+
+    .tab-navigation-controls {
+        .d-flex {
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .btn {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+    }
+
+    .card {
+        border: 0px solid rgba(0, 0, 0, 0.4);
+        width: 100%;
+        padding: 10px;
+    }
+
+    .modal-dialog {
+        max-width: 95%;
+    }
+
+    .modal-content {
+        overflow-y: scroll;
+    }
+
+    textarea.form-control {
+        height: 5rem;
+    }
+}
+.checkout-summary h6 {
+    color: #62646a !important;
+}
+//css for image gallery
+.swiper-button-next, .swiper-button-prev {
+    top: 45%;
+}
+.property-gallery {
+    width: 100%;
+    // Full viewport width
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50%;
+    margin-right: -50%;
+
+    .gallery-container {
+        width: 100%;
+        // Full width
+        margin: 0 auto;
+        padding: 0;
+        // Remove padding for true full width
+
+        @media (min-width: 1400px) {
+            // Optional: Add max-width for very large screens if desired
+            width: 100%;
+            margin: 0 auto;
+        }
+    }
+
+    .main-image-section {
+        position: relative;
+        border-radius: 0;
+        // Remove border radius for full width
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        background: #fff;
+
+        .image-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            z-index: 10;
+            backdrop-filter: blur(5px);
+
+            .current-slide {
+                color: #ffd700;
+                font-size: 18px;
+                font-weight: 700;
+            }
+        }
+
+        .main-swiper {
+            width: 100%;
+            height: calc(100vh - 96px);
+            // Slightly taller for full-width experience
+            border-radius: 0;
+            // Remove border radius
+
+            @media (max-width: 992px) {
+                height: 500px;
+            }
+
+            @media (max-width: 768px) {
+                height: 400px;
+            }
+
+            @media (max-width: 576px) {
+                height: 350px;
+            }
+
+            .swiper-slide {
+                .main-image-wrapper {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+
+                    .main-image {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: block;
+                    }
+
+                    .image-number {
+                        position: absolute;
+                        bottom: 25px;
+                        left: 25px;
+                        background: rgba(0, 0, 0, 0.85);
+                        color: white;
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: 700;
+                        font-size: 18px;
+                        z-index: 2;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    }
+
+                    .image-caption {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+                        color: white;
+                        padding: 20px 25px 15px;
+                        font-size: 16px;
+                        text-align: center;
+                        z-index: 2;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .swiper-button-next,
+            .swiper-button-prev {
+                color: white;
+                background: rgba(0, 0, 0, 0.6);
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+
+                &:after {
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+
+                &:hover {
+                    background: rgba(0, 0, 0, 0.9);
+                    transform: scale(1.1);
+                }
+
+                @media (max-width: 768px) {
+                    width: 44px;
+                    height: 44px;
+
+                    &:after {
+                        font-size: 20px;
+                    }
+                }
+            }
+            .swiper-button-next, .swiper-rtl .swiper-button-prev {
+                right: 1.8rem;
+            }
+            .swiper-button-prev, .swiper-rtl .swiper-button-next {
+                left: 1.8rem;
+            }
+            .swiper-pagination {
+                bottom: 15px !important;
+
+                .swiper-pagination-bullet {
+                    width: 12px;
+                    height: 12px;
+                    background: rgba(255, 255, 255, 0.8);
+                    opacity: 0.8;
+                    margin: 0 6px !important;
+                    transition: all 0.3s ease;
+
+                    &-active {
+                        background: #007bff;
+                        opacity: 1;
+                        transform: scale(1.2);
+                    }
+                }
+            }
+        }
+    }
+
+    // ============================================
+    // Thumbnail Gallery with Navigation Arrows
+    // ============================================
+    .thumbnail-section {
+        //padding: 0 50px; // Increased padding for full-width with arrow space
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 0;
+        background: #f8f9fa;
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        @media (max-width: 768px) {
+            padding: 0 40px;
+        }
+
+        @media (max-width: 576px) {
+            padding: 0 30px;
+        }
+
+        .thumb-swiper {
+            padding: 15px 2px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+
+            // MARK: Updated arrow positioning for full-width
+            .thumb-nav-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
+                width: 40px;
+                // Slightly larger for full-width
+                height: 40px;
+                background: rgba(0, 0, 0, 0.6);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                @include transition;
+
+                &:hover {
+                    background: rgba(0, 0, 0, 0.9);
+                    transform: translateY(-50%) scale(1.1);
+                }
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    color: white;
+                }
+
+                &.swiper-button-disabled {
+                    opacity: 0.3;
+                    cursor: not-allowed;
+                    pointer-events: none;
+
+                    &:hover {
+                        transform: translateY(-50%);
+                        background: rgba(0, 0, 0, 0.6);
+                    }
+                }
+            }
+
+            .thumb-nav-prev {
+                left: 15px;
+            }
+
+            .thumb-nav-next {
+                right: 15px;
+            }
+
+            &:hover {
+                .thumb-nav-arrow {
+                    background: rgba(0, 0, 0, 0.8);
+                }
+            }
+        }
+
+        // MARK: Updated thumbnail sizing for full-width
+        .swiper-slide {
+            &.thumbnail-wrapper {
+                position: relative;
+                border-radius: 6px;
+                // Slightly smaller radius
+                overflow: hidden;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: 3px solid transparent;
+                flex-shrink: 0;
+                margin: 0 5px;
+                // Add small margin between thumbnails
+                height: 120px;
+                // Slightly taller for full-width
+                width: calc((100% / 6) - 10px);
+                // 6 images minus spacing
+                @media (max-width: 1200px) {
+                    width: calc((100% / 5) - 10px);
+                    // 5 images on medium screens
+                    height: 105px;
+                }
+
+                @media (max-width: 992px) {
+                    width: calc((100% / 4) - 10px);
+                    // 4 images on tablets
+                    height: 95px;
+                }
+
+                @media (max-width: 768px) {
+                    width: calc((100% / 3) - 10px);
+                    // 3 images on small tablets
+                    height: 85px;
+                }
+
+                @media (max-width: 576px) {
+                    width: calc((100% / 2) - 10px);
+                    // 2 images on mobile
+                    height: 75px;
+                }
+
+                &.active {
+                    border-color: #378f86;
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+                }
+
+                &:hover:not(.active) {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                }
+
+                .thumbnail {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                    transition: transform 0.3s ease;
+                }
+
+                .thumbnail-number {
+                    position: absolute;
+                    bottom: 8px;
+                    right: 8px;
+                    background: rgba(0, 0, 0, 0.85);
+                    color: white;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 13px;
+                    font-weight: 700;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 50%);
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                &:hover::after {
+                    opacity: 1;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            .thumb-swiper {
+                .thumb-nav-arrow {
+                    width: 36px;
+                    height: 36px;
+
+                    svg {
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 576px) {
+            .thumb-swiper {
+                .thumb-nav-arrow {
+                    width: 32px;
+                    height: 32px;
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 400px) {
+            .thumb-swiper {
+                .thumb-nav-arrow {
+                    display: none;
+                }
+            }
+
+            padding: 0 20px;
+        }
+    }
+}
+
+
+:host ::ng-deep {
+    .custom-tabset  .nav-link {
+        color: #95979d;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-right: 12px;
+        padding: 8px 12px;
+        text-decoration: none;
+        transition: color .2s ease-in-out;
+        display: inline-block;
+        font-weight: 600;
+    }
+    .custom-tabset  .nav-link.active {
+        color: #378f86;
+
+    }
+    @media (max-width: 1080px) {
+        .custom-tabset  .nav-link {
+            border: 1px solid;
+            margin-bottom: 6px;
+        }
+    }
+}
+/* ===== CALENDAR OPTIMIZATIONS ===== */
+.calendar-section {
+    border-radius: 8px;
+    background: #fff;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== CUSTOM DATE STYLES - TARGETING custom-day-wrapper IN BOTH CALENDAR TYPES ===== */
+:host ::ng-deep {
+    /* COMMON BASE STYLES FOR ALL CUSTOM-DAY-WRAPPER ELEMENTS */
+    .custom-day-wrapper {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0px !important;
+        border: 1px solid transparent !important;
+        font-weight: 500 !important;
+        font-size: 0.875rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        overflow: hidden !important;
+        cursor: default !important;
+
+        /* UNAVAILABLE DATES - RED (FULLY RED) */
+        &.date-fully-unavailable {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border-color: #dc3545 !important;
+            text-decoration: line-through !important;
+            opacity: 0.8 !important;
+            cursor: not-allowed !important;
+
+            &.disabled {
+                background-color: #dc3545 !important;
+                color: white !important;
+                opacity: 0.8 !important;
+            }
+
+            /* Override range selection styles for unavailable dates */
+            &.in-range,
+            &.range-start,
+            &.range-end {
+                background-color: #dc3545 !important;
+                color: white !important;
+                opacity: 0.8 !important;
+                cursor: not-allowed !important;
+            }
+        }
+
+        /* AVAILABLE DATES - GREEN (FULLY GREEN) */
+        &.date-fully-available {
+            background-color: #28a745 !important;
+            color: white !important;
+            border-color: #28a745 !important;
+            cursor: pointer !important;
+
+            &.disabled {
+                background-color: #28a745 !important;
+                color: white !important;
+                cursor: not-allowed !important;
+            }
+
+            &:not(.disabled):hover {
+                background-color: #218838 !important;
+                border-color: #1e7e34 !important;
+                transform: scale(1.05) !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+
+        /* AM ONLY - Top Green / Bottom Red */
+        &.date-am-only {
+            background: linear-gradient(to right bottom,#28a745 50%,#e63946 50%) !important;
+            color: white !important;
+            border-color: #dee2e6 !important;
+            cursor: pointer !important;
+
+            &::after {
+                /*content: 'AM' !important;*/
+                font-size: 0.6rem !important;
+                position: absolute !important;
+                top: 2px !important;
+                left: 2px !important;
+                color: white !important;
+                font-weight: bold !important;
+                text-shadow: 0 0 2px rgba(0,0,0,0.5);
+            }
+
+            &.disabled {
+                opacity: 0.8 !important;
+                cursor: not-allowed !important;
+            }
+
+            &:not(.disabled):hover {
+                transform: scale(1.05) !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+
+        /* PM ONLY - Top Red / Bottom Green */
+        &.date-pm-only {
+            background: linear-gradient(to right bottom,#e63946 50%,#28a745 50%);
+            color: white !important;
+            border-color: #dee2e6 !important;
+            cursor: pointer !important;
+
+            &::after {
+                /*content: 'PM' !important;*/
+                font-size: 0.6rem !important;
+                position: absolute !important;
+                bottom: 2px !important;
+                right: 2px !important;
+                color: white !important;
+                font-weight: bold !important;
+                text-shadow: 0 0 2px rgba(0,0,0,0.5);
+            }
+
+            &.disabled {
+                opacity: 0.8 !important;
+                cursor: not-allowed !important;
+            }
+
+            &:not(.disabled):hover {
+                transform: scale(1.05) !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+
+        /* NO CHECKIN - Green with red dot */
+        &.date-no-checkin {
+            background-color: #28a745 !important;
+            color: white !important;
+            border-color: #28a745 !important;
+            position: relative !important;
+            cursor: pointer !important;
+
+            &::before {
+                content: '' !important;
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 8px !important;
+                height: 8px !important;
+                background-color: #dc3545 !important;
+                border-radius: 50% !important;
+                border: 1px solid white !important;
+                box-shadow: 0 0 2px rgba(0,0,0,0.5);
+            }
+
+            &.disabled {
+                opacity: 0.8 !important;
+                cursor: not-allowed !important;
+            }
+
+            &:not(.disabled):hover {
+                background-color: #218838 !important;
+                border-color: #1e7e34 !important;
+                transform: scale(1.05) !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+
+        /* Default styling for dates without custom status */
+        &:not(.date-fully-unavailable):not(.date-fully-available):not(.date-am-only):not(.date-pm-only):not(.date-no-checkin) {
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+            border-color: #dee2e6 !important;
+            cursor: default !important;
+
+            &.disabled {
+                background-color: #6c757d !important;
+                color: white !important;
+                opacity: 0.5 !important;
+                cursor: not-allowed !important;
+            }
+
+            &:not(.disabled):hover {
+                background-color: #e2e6ea !important;
+                border-color: #dae0e5 !important;
+            }
+        }
+
+        /* Range selection styles for date picker */
+        &.in-range {
+            background-color: rgba(40, 167, 69, 0.2) !important;
+            color: #198754 !important;
+            border-radius: 0 !important;
+
+            &:hover {
+                background-color: rgba(40, 167, 69, 0.3) !important;
+                color: #fff !important;
+            }
+        }
+
+        &.range-start,
+        &.range-end {
+            background-color: #28a745 !important;
+            color: white !important;
+            border-radius: 50% !important;
+            z-index: 1;
+
+            &:hover {
+                background-color: #218838 !important;
+            }
+        }
+
+        &.blocked-range {
+            background-color: rgba(220, 53, 69, 0.15) !important;
+            color: #dc3545 !important;
+            cursor: not-allowed !important;
+        }
+    }
+
+    /* Style for DUAL CALENDAR (availability tab) */
+    .custom-datepicker {
+        /* Ensure proper sizing of date cells */
+        .ngb-dp-day {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+
+            /* Center content in the cell */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ensure week rows have proper height */
+        .ngb-dp-week {
+            min-height: 40px;
+            min-width: 40px;
+        }
+
+        /* Override Bootstrap's default datepicker styles */
+        .btn-light {
+            background-color: transparent !important;
+            border-color: transparent !important;
+        }
+        .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
+            width: 40px;
+            height: 40px;
+            font-style: normal;
+            color: #555;
+        }
+        .ngb-dp-weekdays {
+            background-color: #fff;
+            border: 0px;
+        }
+        .ngb-dp-header, .ngb-dp-month-name {
+            background-color: #378f86;
+            color: #fff !important;
+            font-weight: 300;
+            height: 42px;
+            font-size: 18px;
+        }
+        .ngb-dp-header {
+            padding-top: .35rem;
+        }
+        .ngb-dp-navigation-chevron {
+            color: #fff !important;
+            font-weight: 300;
+        }
+        .ngb-dp-arrow {
+            width: 40px;
+            height: 40px;
+            top: -5px;
+            position: relative;
+        }
+    }
+
+    /* Style for POPUP DATEPICKER (date range picker) */
+    ngb-datepicker {
+        /* Target the popup datepicker */
+        .ngb-dp-day {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+
+            /* Center content in the cell */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
+        width: 40px;
+        height: 40px;
+        font-style: normal;
+        color: #555;
+    }
+    .ngb-dp-weekdays {
+        background-color: #fff;
+        border: 0px;
+    }
+    .ngb-dp-header, .ngb-dp-month-name {
+        background-color: #378f86;
+        color: #fff !important;
+        font-weight: 300;
+        height: 42px;
+    }
+    .ngb-dp-navigation-chevron {
+        color: #fff !important;
+        font-weight: 300;
+    }
+    .ngb-dp-arrow {
+        width: 40px;
+        height: 40px;
+        top: -5px;
+        position: relative;
+    }
+}
+
+/* LEGEND STYLES */
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    flex-shrink: 0;
+
+    &.fully-available {
+        background-color: #28a745;
+    }
+
+    &.fully-unavailable {
+        background-color: #dc3545;
+    }
+
+    &.am-only {
+        background: linear-gradient(to right bottom, #28a745 50%, #e63946 50%) !important;
+    }
+
+    &.pm-only {
+        background: linear-gradient(to right bottom, #e63946 50%, #28a745 50%);
+    }
+
+    &.no-checkin {
+        background-color: #28a745;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #dc3545;
+        }
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    :host ::ng-deep {
+        .custom-datepicker,
+        ngb-datepicker {
+            .ngb-dp-day {
+                width: 36px;
+                height: 36px;
+            }
+
+            .custom-day-wrapper {
+                font-size: 0.8125rem !important;
+
+                &::after {
+                    font-size: 0.5rem !important;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    :host ::ng-deep {
+        .custom-datepicker,
+        ngb-datepicker {
+            .ngb-dp-day {
+                width: 32px;
+                height: 32px;
+            }
+
+            .custom-day-wrapper {
+                font-size: 0.75rem !important;
+
+                &::after {
+                    font-size: 0.45rem !important;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .calendar-section {
+        min-height: 280px;
+        padding: 0.75rem;
+    }
+
+    :host ::ng-deep {
+        .custom-datepicker,
+        ngb-datepicker {
+            .ngb-dp-day {
+                width: 28px;
+                height: 28px;
+            }
+
+            .custom-day-wrapper {
+                font-size: 0.7rem !important;
+
+                &::after {
+                    font-size: 0.4rem !important;
+                }
+            }
+        }
+    }
+}
+
+//for google map
+.map-container {
+    width: 100%;
+    height: 250px;
+}
+::ng-deep {
+    .modal-content {
+        border: 0px solid !important;
+    }
+    .btn-close {
+        --bs-btn-close-focus-shadow: none !important;
+    }
+    .bi-shield-exclamation {
+        color: #4CAF50 !important;
+    }
+}
+
+//for converting \n to newline in html
+.message-text {
+  white-space: pre-line; /* 👈 converts \n into line breaks */
+}

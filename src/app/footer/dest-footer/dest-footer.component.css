@@ -1,0 +1,198 @@
+a {
+    font-size: 15px;
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
+}
+h3 {
+    letter-spacing: 5px;
+}
+ul {
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: 2rem;
+}
+.footer-area {
+    padding: 2rem 5rem;
+    position: inherit;
+    color: #fff;
+    z-index: 100;
+    background: #000000;
+    word-break: break-all;
+    word-wrap: break-word;
+    .destinique-title {
+        line-height: 65px;
+        letter-spacing: 15px;
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 200;
+    }
+    .footer-elements h6 {
+        font-size: 1.15rem !important;
+        font-weight: 400 !important;
+    }
+}
+.footer-call-email {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    a {
+        color: #33d286;
+        svg {
+            height: 16px;
+        }
+    }
+    .footer-email {
+        color: #fff !important;
+    }
+}
+.footer-col {
+    padding-bottom: 0px;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    .footer-navs-header {
+        letter-spacing: 4px;
+        font-weight: 600;
+        padding-bottom: 1.25rem;
+        font-size: 1.1rem;
+    }
+    .footer-navs-item {
+        padding-top: .5rem;
+        a {
+            font-size: 1rem;
+            &:hover {
+                color: #fff;
+                text-decoration: underline !important;
+            }
+        }
+    }
+}
+.social-icon-bar {
+    padding-left: 15px;
+    a {
+        display: block;
+        text-align: center;
+        padding: 7px 6px;
+        font-size: 20px;
+        margin: 6px 6px 6px 6px !important;
+        border-radius: 50%;
+        float: left;
+        height: 45px;
+        width: 45px;
+        background-color: #fff;
+        color: #000;
+        a:hover {
+            background-color: #eee;
+            transition: all 0.3s ease;
+            color: #378f86 !important;
+        }
+    }
+    svg {
+        height: 24px;
+        width: 24px;
+        fill: currentcolor;
+        &:hover {
+            color: #378f86 !important;
+        }
+    }
+}
+img {
+    object-position: left !important;
+    width: fit-content !important;
+    height: 80.5px !important;
+}
+.footer-copyright{
+    padding-left: 50px;
+}
+.need-help-info {
+    flex: 1;
+    white-space: nowrap;
+    text-wrap: balance !important;
+    a {
+        color: #33d286;
+    }
+}
+.error {
+    color: #ff0000;
+}
+.success {
+    color: green;
+}
+.contact-message {
+    text-align: center;
+    padding: 3rem;
+}
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+    img {
+        width: 200px;
+        height: 100%;
+    }
+    a {
+        font-size: 14px;
+    }
+    h3 {
+        letter-spacing: 2px;
+    }
+}
+@media (max-width: 1024px) {
+    .copyright-container{
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 20px !important;
+        padding-left: 25px !important;
+    }
+    .footer-copyright{
+        padding-left: 0;
+    }
+    .footer-col {
+        .footer-navs-header {
+            letter-spacing: 2px;
+            font-weight: 600;
+            padding-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .footer-col {
+        padding-bottom: 0px;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        padding-left: 10px;
+    }
+    .footer-navs-header {
+        font-size: 1rem;
+    }
+    .footer-navs-item {
+        padding-top: .3rem;
+    }
+    .footer-navs-item a {
+        font-size: .85rem;
+    }
+    img {
+        width: 200px;
+        height: 100%;
+    }
+    a {
+        font-size: 14px;
+    }
+    h3 {
+        letter-spacing: 2px;
+    }
+    .destinique-title {
+        font-size: 28px !important;
+        font-weight: 500 !important;
+        margin-bottom: 0 !important;
+    }
+    .footer-elements {
+        font-size: 1.05rem !important;
+    }
+    .footer-area {
+        padding: 1rem 1rem;
+    }
+}

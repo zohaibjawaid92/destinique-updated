@@ -1,0 +1,82 @@
+<div class="promotions-container">
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-circus"
+    [fullScreen]="true"
+    class="spinner"
+  >
+    <p style="color: white">Loading...</p>
+  </ngx-spinner>
+
+    <div class="overlay-effect h-100 w-100"></div>
+    <img src="assets/website_images/promotions/beach2.webp"
+         alt="contact-banner"
+         loading="lazy" decoding="async" class="img-fluid"/>
+    <div class="centered">
+        <h1>Destinique Promotions</h1>
+    </div>
+</div>
+
+<div class="container-fluid">
+  <ng-template #noData>
+    <div *ngIf="this.promoData.length === 0" class="row">
+      <div class="col-12">
+        <div class="promo-not-avl">There are no promotions at this time.</div>
+      </div>
+    </div>
+  </ng-template>
+
+    <div class="row promo-container" *ngIf="this.promoData.length > 0; else noData">
+        <!-- Promotions Loop -->
+        <div *ngFor="let item of this.promoData" class="col-12 col-sm-12 col-lg-6 col-xl-4">
+            <div class="promotions-item">
+                <a href="#"
+                   [ngStyle]="{'background-image': getImageUrl(item.promo_main_image?.path)}"
+                   class="promotions-link"
+                   (click)="openPromotionModal(item); $event.preventDefault()"
+                >
+                  <div class="promotions-info">
+                    <span *ngIf="(item.display_location | lowercase) === 'yes'" class="promotions-label-term">{{item.location}}</span>
+                    <h2 *ngIf="(item.display_title | lowercase) === 'yes'"  class="promotions-title" [innerHTML]="item.title"></h2>
+                    <h3 class="promotions-term promotions-discount">{{item.offer_price}}</h3>
+                    <h4 *ngIf="(item.display_property_name | lowercase) === 'yes'" class="promotions-acc-title" [innerHTML]="item.property_name"></h4>
+                  </div>
+                    <div class="promotions-loop-mask"></div>
+                </a>
+
+                <div class="b-b">
+                      <button class="promotions-button btn btn-outline-primary btn-sm"
+                              (click)="openPromotionModal(item)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/><path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/></svg>
+                        More Details
+                    </button>
+                    <a *ngIf="userRole == 1 || userRole == 2"
+                      target="_blank" class="promo-edit-btn"
+                       [attr.href]="'https://quote.destinique.com/destin/promotions/edit_promotion_text.php?id='+item.id"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/></svg>
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="userRole == 1 || userRole == 2"
+          class="col-12 col-sm-12 col-md-6 col-xl-4">
+            <div class="promotions-item add-promo-con">
+                <a class="add-promo" href="https://quote.destinique.com/destin/promotions/" target="_blank">
+                    <img class="img-fluid add-circle-outline-img"
+                         loading="lazy" decoding="async"
+                         src="assets/website_images/promotions/AddCircleOutline.png" alt="add">
+                    <div class="add-files-con">
+                      <img class="img-fluid add-files-img"
+                           loading="lazy" decoding="async"
+                           src="assets/website_images/promotions/addFiles.png"
+                           alt="add files"> Add Promotions</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

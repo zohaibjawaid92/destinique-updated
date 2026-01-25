@@ -1,0 +1,311 @@
+AppModule
+import { BsDatepickerModule, DatepickerModule } from "ngx-bootstrap/datepicker";
+
+imports: [
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot(),
+]
+////////////////////////////
+PropertydetailsModule
+// NgBootstrap modules
+//import { NgbModule, NgbDatepickerModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDatepickerModule, DatepickerModule } from 'ngx-bootstrap/datepicker';
+
+///////////////
+imports: [
+    NgbDatepickerModule,
+    
+    // Ngx-Bootstrap modules
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot(),
+   
+  ]
+  
+PropertydetailsComponent
+
+import {NgbDate,NgbCalendar,NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import { DatepickerDateCustomClasses } from "ngx-bootstrap/datepicker";
+
+export class PropertydetailsComponent implements OnInit {
+  dateCustomClasses: DatepickerDateCustomClasses[];
+  dateCustomClasses1: any = [];
+
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+  
+  today: Date;
+  minDate: Date;
+  maxDate: Date;
+  minDate1: Date;
+  maxDate1: Date;
+
+  defaultDates: any;
+  defaultDates1: any;
+  defaultDates2: any;
+  fcheckin: any;
+  fcheckout: any;
+
+  getCheckinCheckout = false;
+  checkin = new Date();
+  checkout = new Date();
+  scheckin: any;
+  scheckout: any;
+  finalCheckin = new Date();
+  finalCheckout = new Date();
+  propAvailability: any = [];
+
+ constructor(
+    private calendar: NgbCalendar
+  ) {  
+  
+    this.today = new Date();
+
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.minDate1 = new Date();
+    this.maxDate1 = new Date();
+    this.minDate.setDate(this.minDate.getDate() - 1);
+    this.maxDate.setDate(this.maxDate.getDate() + 364);
+    this.minDate1.setDate(this.minDate1.getDate());
+    this.maxDate1.setDate(this.maxDate1.getDate() + 365);
+	}
+	
+ parseLocalDate(dateStr: string): Date {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day); // month is 0-based
+  }
+
+ngAfterViewInit() {
+	this.getLiveAvailability();
+}
+  
+
+  isLoading: boolean = false;
+  actualAvailData: any = [];
+  enabledAMDates: any = [];
+  enabledPMDates: any = [];
+  // disableDatesANC: any = [];
+
+  async getLiveAvailability() {
+    this.isLoading = true;
+    await this.crudService.getPropertyLiveAvailability(this.listId).then(
+      (resp) => {
+        this.dateCustomClasses = [...this.dateCustomClasses1];
+        if (resp["status"] == "success") {
+          this.isLoading = false;
+          this.availData = resp["payload"]["avalabilityData"]["apiAvailabilityData"];
+          const unitId = resp["payload"]["avalabilityData"]["unit_id"];
+          localStorage.setItem("PropertyunitId", unitId);
+
+          var actualAvailData = resp;
+          this.actualAvailData = resp["payload"]["avalabilityData"]["availabilityData"];
+          // return false;
+
+          if (actualAvailData["payload"]["avalabilityData"] != null) {
+              for (var key in this.actualAvailData) {
+                  const parts = key.split("-");
+                  const floridaDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+
+                  if (this.actualAvailData[key]["AvailableYesNo"] == "No") {
+                      if (this.actualAvailData[key]["AvailableAMYesNo"] == "Yes" && this.actualAvailData[key]["AvailablePMYesNo"] == "No") {
+                          //Condition #4: AM GREEN / PM RED
+                          //show the date cell with half green in the morning and half red in the evening
+                          this.enabledAMDates.push(new Date(floridaDate));
+
+                          // Create a custom class object for this date
+                          const customClass = {date: new Date(floridaDate), classes: ["customDayAMClass"],};
+
+                          // Push the custom class object to dateCustomClasses
+                          this.dateCustomClasses.push(customClass);
+                      }
+                      else{
+                          //Condition #2: FULLY RED
+                          //show the date cell with full red background color
+                          this.disableDates1.push(new Date(floridaDate));
+                      }
+                  }
+                  else{
+                      if (this.actualAvailData[key]["AvailableAMYesNo"] == "Yes" && this.actualAvailData[key]["AvailablePMYesNo"] == "No") {
+                          //return [true, "pm_unavailable", "AM Available"];
+                          //Condition #4: AM GREEN / PM RED
+                          //show the date cell with half green in the morning and half red in the evening
+                          this.enabledAMDates.push(new Date(floridaDate));
+
+                          // Create a custom class object for this date
+                          const customClass = {date: new Date(floridaDate), classes: ["customDayAMClass"],};
+
+                          // Push the custom class object to dateCustomClasses
+                          this.dateCustomClasses.push(customClass);
+                      }
+                      else if (this.actualAvailData[key]["AvailableAMYesNo"] == "No" && this.actualAvailData[key]["AvailablePMYesNo"] == "Yes") {
+                          //return [true, "am_unavailable", "PM Available"];
+                          //Condition #3: AM RED / PM GREEN
+                          //show the date cell with half red in the morning and half green in the evening
+                          this.enabledPMDates.push(new Date(floridaDate));
+
+                          // Create a custom class object for this date
+                          const customClass = {date: new Date(floridaDate), classes: ["customDayPMClass"],};
+
+                          // Push the custom class object to dateCustomClasses
+                          this.dateCustomClasses.push(customClass);
+                      }
+                      else if (this.actualAvailData[key]["AvailableCheckInYesNo"] == "No" && this.actualAvailData[key]["AvailableYesNo"] == "Yes") {
+                          //return [true, "anc", "NO CHECK IN ALLOWED"];
+                          //Condition #5: FULLY GREEN WITH RED CIRCLE => ANC [Available but NO CHECKIN]
+                          //show the date cell with full green background color with a red circle in the center
+                          this.enabledDates1.push(new Date(floridaDate));
+
+                          // Add custom class for fully green background color with red circle
+                          const customClass = {date: new Date(floridaDate), classes: ["customDayFullGreenClass"],};
+
+                          // Push the custom class object to dateCustomClasses
+                          this.dateCustomClasses.push(customClass);
+                      }
+                      else{
+                          //return [true, "", "Available"];
+                          //Condition #1: FULLY GREEN
+                          //show the date cell with full green background color
+                          this.enabledDates1.push(new Date(floridaDate));
+                      }
+                  }
+              }
+              this.isLoading = false;
+          }
+          else{
+          }
+
+          if (this.enabledAMDates.length > 0) {
+            for (let index = 0; index < this.enabledAMDates.length; index++) {
+              let obj = {
+                date: this.enabledAMDates[index],
+                classes: ["customDayAMClass"],
+              };
+              this.dateCustomClasses1.push(obj);
+              this.enabledDates1.push(this.enabledAMDates[index]);
+            }
+          }
+
+          if (this.enabledPMDates.length > 0) {
+            for (let index = 0; index < this.enabledPMDates.length; index++) {
+              let obj = {
+                date: this.enabledPMDates[index],
+                classes: ["customDayPMClass"],
+              };
+              this.dateCustomClasses1.push(obj);
+              this.enabledDates1.push(this.enabledPMDates[index]);
+            }
+          }
+        }
+        else {
+        }
+      },
+      (error) => {
+          this.isLoading = false;
+      }
+    );
+  }
+/////////////////
+
+::ng-deep .bs-datepicker-body table {
+    border-spacing: 7px;
+}
+
+
+::ng-deep .bs-datepicker-body table td span.is-other-month,
+.bs-datepicker-body table td.is-other-month span {
+    display: none;
+}
+
+::ng-deep .bs-datepicker-body table td span.disabled,
+.bs-datepicker-body table td.disabled span {
+    color: #fff;
+    background-color: rgb(250, 4, 4);
+}
+
+::ng-deep .bs-datepicker-body table th {
+    font-weight: bold;
+}
+
+::ng-deep .bs-datepicker-body table td span {
+    /* display: block;
+    margin: 0 auto;
+    font-size: 13px; */
+    cursor: pointer;
+    background-color: rgb(43, 133, 43);
+    /* background: linear-gradient(to right bottom, red 50%, green 50%); */
+    color: #fff;
+    border-radius: 0;
+}
+
+::ng-deep .customDayPMClass {
+    background: linear-gradient(to right bottom, red 50%, rgb(43, 133, 43) 50%);
+}
+
+::ng-deep .customDayAMClass {
+    background: linear-gradient(to right bottom, rgb(43, 133, 43) 50%, red 50%);
+    pointer-events: all;
+}
+
+::ng-deep .customDayFullGreenClass {
+    background-color: rgb(43, 133, 43);
+    /* Adjust the size and color of the red circle as needed */
+    background-image: radial-gradient(circle at center, red 8px, transparent 6px);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+::ng-deep .bs-datepicker-body table td span[class*="select-"],
+.bs-datepicker-body table td[class*="select-"] span {
+    background-color: rgb(228, 7, 239);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+::ng-deep .avail-read-only .bs-datepicker-body {
+    pointer-events: none;
+}
+
+::ng-deep .bs-datepicker-body table th {
+    font-size: 14px;
+    color: #000;
+}
+
+
+::ng-deep .theme-blue .bs-datepicker-head {
+    background-color: #378f86;
+}
+
+::ng-deep .bs-datepicker-body table td {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.availability-row {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+a {
+    color: #378f86;
+}
+a:hover{
+    color: #495057;
+}
+.desktopCalender {
+    display: block;
+}
+
+.mobileCalender {
+    display: none;
+}
+
+
+::ng-deep .bs-datepicker {
+    box-shadow: 0 34px 21px -22px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #dee2e6 !important;
+}

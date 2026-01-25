@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- ========================================= -->
+        <!-- PERFORMANCE & CACHE HEADERS -->
+        <!-- ========================================= -->
+        <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+        <meta http-equiv="Expires" content="31536000">
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+        <meta charset="utf-8">
+        <title>Destinique</title>
+        <meta name="description" content="Book luxury villas vacation rentals worldwide with Destinique. Enjoy elite stays, private amenities & personalized travel advice from top luxury Travel advisors.">
+        <meta name="keywords" content="luxury villas for rent, luxury travel agent, hidden villas, oceanfront hotels, beachfront homes.">
+
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="https://destinique.com/favicon.ico">
+
+        <!-- Preconnect to Google Maps domains -->
+<!--        <link rel="preconnect" href="https://maps.googleapis.com" crossorigin>-->
+<!--        <link rel="preconnect" href="https://maps.gstatic.com" crossorigin>-->
+<!--        <link rel="dns-prefetch" href="https://maps.googleapis.com">-->
+<!--        <link rel="dns-prefetch" href="https://maps.gstatic.com">-->
+        <!-- Optional: Preload the script if you know it'll be used -->
+<!--        <link rel="preload" href="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdQ8e5JTa-hVDQc9iTxuA_iQFdb9X3dWI&libraries=places" as="script">-->
+
+        <!-- ========================================= -->
+        <!-- SOCIAL META TAGS -->
+        <!-- ========================================= -->
+        <meta property="og:title" content="Luxury Villas Vacation Rentals | Luxury Travel Advisor -Destinique.">
+        <meta property="og:description" content="Book luxury villas vacation rentals worldwide with Destinique. Enjoy elite stays, private amenities & personalized travel advice from top luxury Travel advisors.">
+        <meta property="og:image" content="assets/website_images/home/banner/banner_404.webp">
+        <meta property="og:url" content="https://destinique.com/">
+        <meta property="og:type" content="website">
+
+        <!-- LOCAL Montserrat (recommended for scores >95) -->
+        <link rel="preload" href="assets/fonts/montserrat-regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="assets/fonts/montserrat-semibold.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="assets/fonts/fonts.css">
+        <!-- Preload Font Awesome asynchronously -->
+        <!--
+        <link
+          rel="preload"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          as="style"
+          onload="this.onload=null;this.rel='stylesheet'"
+        >
+        <noscript>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        </noscript>
+        -->
+
+        <!-- Preload LCP logo -->
+        <link rel="preload" as="image" href="assets/dest-images/assets/logo.webp" type="image/webp"/>
+
+        <!-- ========================================= -->
+        <!-- LCP IMAGE PRELOAD -->
+        <!-- ========================================= -->
+        <link rel="preload" href="assets/website_images/home/banner/banner_404.webp" as="image" type="image/webp" fetchpriority="high">
+    </head>
+    <body>
+        <app-root></app-root>
+        <script>
+          (function () {
+            var allowedHosts = ['destinique.com', 'www.destinique.com'];
+
+            if (!allowedHosts.includes(window.location.hostname)) {
+              return;
+            }
+
+            var gaLoaded = false;
+
+            function loadGA() {
+              if (gaLoaded) return;
+              gaLoaded = true;
+
+              var s = document.createElement('script');
+              s.src = 'https://www.googletagmanager.com/gtag/js?id=G-122QQMGN2V';
+              s.async = true;
+              document.head.appendChild(s);
+
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              window.gtag = gtag;
+
+              gtag('js', new Date());
+              gtag('config', 'G-122QQMGN2V', { send_page_view: true });
+            }
+
+            // Load GA on first user interaction (best for mobile)
+            ['touchstart', 'scroll', 'keydown', 'click'].forEach(function (event) {
+              window.addEventListener(event, loadGA, { once: true, passive: true });
+            });
+
+            // Fallback: load GA when browser is idle
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(loadGA, { timeout: 3000 });
+            } else {
+              setTimeout(loadGA, 3000);
+            }
+          })();
+        </script>
+    </body>
+</html>
