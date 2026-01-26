@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NgxSpinnerService } from "ngx-spinner";
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { CrudService } from "src/app/shared/services/crud.service";
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { GoogleMapsService, PlacePrediction } from 'src/app/shared/services/google-maps.service';
 
 // Interfaces
 import { ContactUSFormData, ContactUSApiResponse } from 'src/app/shared/interfaces/contact-form.interface';
@@ -93,13 +94,21 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
   arrivalDate: Date | null = null;
   departureMinDate: Date | undefined = undefined;
 
+  // Google Places Autocomplete
+  @ViewChild('destinationInput', { static: false }) destinationInput!: ElementRef<HTMLInputElement>;
+  placePredictions: PlacePrediction[] = [];
+  showPredictions = false;
+  selectedPredictionIndex = -1;
+  private predictionTimeout: any;
+
   constructor(
     private fb: FormBuilder,
     private crudService: CrudService,
     private storageService: StorageService,
     private toast: ToastrService,
     public spinner: NgxSpinnerService,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private googleMapsService: GoogleMapsService
   ) {
     this.contactForm = this.createForm();
     this.localeService.use('en-gb');
@@ -117,18 +126,140 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
     }, 200);
   }
 
+  // ========== GOOGLE PLACES AUTCOMPLETE METHODS ==========
+
+  // Load Google Maps API on demand when user focuses/clicks on input
+  async onDestinationFocus(): Promise<void> {
+    if (!this.googleMapsService.isApiLoaded()) {
+      try {
+        await this.googleMapsService.loadGoogleMaps();
+      } catch (error) {
+        console.error('Failed to load Google Maps API:', error);
+      }
+    }
+  }
+
+  // Handle input changes with debouncing
+  onDestinationInput(event: Event): void {
+    this.selectedPredictionIndex = -1;
+    const input = event.target as HTMLInputElement;
+    const value = input.value.trim();
+
+    // Clear previous timeout
+    if (this.predictionTimeout) {
+      clearTimeout(this.predictionTimeout);
+    }
+
+    // Hide predictions if input is empty
+    if (!value || value.length < 2) {
+      this.placePredictions = [];
+      this.showPredictions = false;
+      return;
+    }
+
+    // Debounce API calls (wait 300ms after user stops typing)
+    this.predictionTimeout = setTimeout(() => {
+      this.getPlacePredictions(value);
+    }, 300);
+  }
+
+  // Get place predictions from Google Places API
+  private async getPlacePredictions(input: string): Promise<void> {
+    if (!this.googleMapsService.isApiLoaded()) {
+      await this.onDestinationFocus();
+    }
+
+    try {
+      const predictions = await this.googleMapsService.getPlacePredictions(input);
+      this.placePredictions = predictions;
+      this.showPredictions = predictions.length > 0;
+      this.selectedPredictionIndex = -1; // Reset selection when new predictions arrive
+    } catch (error) {
+      console.error('Error getting place predictions:', error);
+      this.placePredictions = [];
+      this.showPredictions = false;
+    }
+  }
+
+  // Handle selection of a place from predictions
+  async onPlaceSelected(prediction: PlacePrediction): Promise<void> {
+    try {
+      // Get full place details
+      const placeDetails = await this.googleMapsService.getPlaceDetails(prediction.place_id);
+      
+      // Set the formatted address in the form
+      this.contactForm.get('desDestination')?.setValue(placeDetails.formatted_address);
+      
+      // Hide predictions dropdown
+      this.showPredictions = false;
+      this.placePredictions = [];
+      this.selectedPredictionIndex = -1;
+      
+      // Mark field as touched
+      this.contactForm.get('desDestination')?.markAsTouched();
+    } catch (error) {
+      console.error('Error getting place details:', error);
+      // Fallback: use the description if details fail
+      this.contactForm.get('desDestination')?.setValue(prediction.description);
+      this.showPredictions = false;
+      this.placePredictions = [];
+      this.selectedPredictionIndex = -1;
+    }
+  }
+
+  // Handle keyboard navigation
+  onDestinationKeyDown(event: KeyboardEvent): void {
+    if (!this.showPredictions || this.placePredictions.length === 0) {
+      return;
+    }
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        this.selectedPredictionIndex = Math.min(
+          this.selectedPredictionIndex + 1,
+          this.placePredictions.length - 1
+        );
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        this.selectedPredictionIndex = Math.max(this.selectedPredictionIndex - 1, -1);
+        break;
+      case 'Enter':
+        event.preventDefault();
+        if (this.selectedPredictionIndex >= 0 && this.selectedPredictionIndex < this.placePredictions.length) {
+          this.onPlaceSelected(this.placePredictions[this.selectedPredictionIndex]);
+        }
+        break;
+      case 'Escape':
+        this.showPredictions = false;
+        this.selectedPredictionIndex = -1;
+        break;
+    }
+  }
+
+  // Handle click outside to close predictions
+  onDestinationBlur(): void {
+    // Delay hiding to allow click on prediction item
+    setTimeout(() => {
+      this.showPredictions = false;
+      this.selectedPredictionIndex = -1;
+      this.markFieldAsTouched('desDestination');
+    }, 200);
+  }
+
   private createForm(): FormGroup {
     return this.fb.group({
       // Required fields
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,12}$/)]],
-      desDestination: ['', Validators.required],
-      arrival: ['', Validators.required],
-      departure: ['', Validators.required],
+      phone: ['', [Validators.pattern(/^[0-9]{10,12}$/)]],
+      desDestination: [''],
+      arrival: [''],
+      departure: [''],
       totalGuests: ['1', [Validators.required, Validators.min(1)]],
-      budgets: ['', Validators.required],
+      budgets: [''],
       // accomTypeSelect: ['', Validators.required],
       accomTypeSelect: this.fb.array([], Validators.required),
 
@@ -423,12 +554,7 @@ export class ContactUsComponent implements OnInit, AfterViewInit {
         case 'firstName': return 'First name is required';
         case 'lastName': return 'Last name is required';
         case 'email': return 'Email address is required';
-        case 'phone': return 'Phone number is required';
-        case 'desDestination': return 'Desired destination is required';
-        case 'arrival': return 'Arrival date is required';
-        case 'departure': return 'Departure date is required';
         case 'totalGuests': return 'Total guests is required';
-        case 'budgets': return 'Budget is required';
         case 'accomTypeSelect': return 'Accommodation type preference is required';
         default: return 'This field is required';
       }
