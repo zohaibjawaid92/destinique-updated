@@ -1,13 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl, ControlContainer, FormGroupDirective } from '@angular/forms';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { AbstractControl, ControlContainer, ControlValueAccessor, FormGroupDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-form-input',
   templateUrl: './form-input.component.html',
   styleUrls: ['./form-input.component.scss'],
-  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
+  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FormInputComponent),
+      multi: true
+    }
+  ]
 })
-export class FormInputComponent {
+export class FormInputComponent implements ControlValueAccessor {
   @Input() title = '';
   @Input() placeholder = '';
   @Input() isRequired = false;
@@ -41,7 +48,41 @@ export class FormInputComponent {
   @Output() inputBlur = new EventEmitter<FocusEvent>();
   @Output() inputKeydown = new EventEmitter<KeyboardEvent>();
 
+  // ControlValueAccessor implementation
+  _value: any = '';
+  private _onChange = (value: any) => {};
+  private _onTouched = () => {};
+  disabled = false;
+
   constructor(private controlContainer: ControlContainer) {}
+
+  // ControlValueAccessor methods
+  writeValue(value: any): void {
+    this._value = value ?? '';
+  }
+
+  registerOnChange(fn: (value: any) => void): void {
+    this._onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this._onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  onInputChange(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this._value = value;
+    this._onChange(value);
+  }
+
+  onInputBlur(): void {
+    this._onTouched();
+    this.markTouched();
+  }
 
   get control(): AbstractControl | null {
     const c = this.controlContainer?.control;

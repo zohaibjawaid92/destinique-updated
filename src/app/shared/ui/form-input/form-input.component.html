@@ -12,7 +12,7 @@
         [id]="id || formControlName"
         [type]="type"
         [placeholder]="placeholder"
-        [formControlName]="formControlName"
+        [value]="_value"
         [attr.autocomplete]="autocomplete || null"
         [attr.inputmode]="inputMode || null"
         [attr.maxlength]="maxLength ?? null"
@@ -20,10 +20,12 @@
         [attr.max]="max ?? null"
         [attr.step]="step ?? null"
         [readonly]="readonly"
+        [disabled]="disabled"
         [class.is-invalid]="showErrors && isInvalid"
+        (input)="onInputChange($event)"
         (focus)="inputFocus.emit($event)"
         (keydown)="inputKeydown.emit($event)"
-        (blur)="markTouched(); inputBlur.emit($event)"
+        (blur)="onInputBlur(); inputBlur.emit($event)"
       />
 
       <ng-content select="[afterInput]"></ng-content>

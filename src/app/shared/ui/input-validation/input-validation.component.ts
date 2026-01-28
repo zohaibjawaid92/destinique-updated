@@ -24,7 +24,14 @@ export class InputValidationComponent {
     const firstKey = Object.keys(errors)[0];
     if (!firstKey) return '';
 
+    // Custom messages override defaults
     if (this.errorMessages?.[firstKey]) return this.errorMessages[firstKey];
+
+    // Handle string error values (like dateRange: "Departure date must be after arrival date")
+    const errorValue = errors[firstKey];
+    if (typeof errorValue === 'string') {
+      return errorValue;
+    }
 
     switch (firstKey) {
       case 'required':
