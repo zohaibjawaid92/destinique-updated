@@ -661,11 +661,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
       background-color: rgba(55, 143, 134, 0.1);
     }
 
-    i {
-      color: #378f86;
-      font-size: 1rem;
-    }
-
     .fw-semibold {
       font-weight: 600;
       color: #002245;
@@ -680,7 +675,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   }
 }
 
-/* Ensure input has proper z-index when dropdown is shown */
+/* z-index when dropdown is shown */
 .mb-3.position-relative {
   z-index: 1;
 
