@@ -28,9 +28,12 @@
 
       <ng-content select="[afterInput]"></ng-content>
 
-      <div class="invalid-feedback" *ngIf="showErrors && isInvalid">
-        {{ errorText }}
-      </div>
+      <app-input-validation
+        [control]="control"
+        [title]="title"
+        [show]="showErrors"
+        [errorMessages]="errorMessages">
+      </app-input-validation>
     </div>
   </div>
 </div>

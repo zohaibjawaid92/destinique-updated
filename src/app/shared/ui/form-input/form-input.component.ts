@@ -57,36 +57,5 @@ export class FormInputComponent {
   markTouched(): void {
     this.control?.markAsTouched();
   }
-
-  get errorText(): string {
-    const ctrl = this.control;
-    const errors = ctrl?.errors;
-    if (!errors) return '';
-
-    const firstKey = Object.keys(errors)[0];
-    if (!firstKey) return '';
-
-    // Custom messages override defaults
-    if (this.errorMessages?.[firstKey]) return this.errorMessages[firstKey];
-
-    switch (firstKey) {
-      case 'required':
-        return this.title ? `${this.title} is required` : 'This field is required';
-      case 'email':
-        return 'Please enter a valid email address';
-      case 'minlength':
-        return `Minimum ${errors['minlength']?.requiredLength ?? ''} characters required`;
-      case 'maxlength':
-        return `Maximum ${errors['maxlength']?.requiredLength ?? ''} characters allowed`;
-      case 'pattern':
-        return 'Invalid format';
-      case 'min':
-        return `Minimum value is ${errors['min']?.min ?? ''}`;
-      case 'max':
-        return `Maximum value is ${errors['max']?.max ?? ''}`;
-      default:
-        return 'Invalid value';
-    }
-  }
 }
 
