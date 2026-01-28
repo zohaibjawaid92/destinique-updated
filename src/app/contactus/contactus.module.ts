@@ -11,6 +11,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Import ngx-bootstrap modules
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     ContactusRoutingModule,
     NgxSpinnerModule,
     NgbCollapseModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    SharedModule
   ]
 })
 export class ContactusModule { }

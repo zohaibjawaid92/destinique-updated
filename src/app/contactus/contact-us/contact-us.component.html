@@ -34,138 +34,85 @@
 
             <!-- First Name -->
             <div class="col-sm-6 col-6 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    First Name<span>*</span>
-                </div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            formControlName="firstName"
-                            (blur)="markFieldAsTouched('firstName')"
-                            [class.is-invalid]="isFieldInvalid('firstName')"/>
-                        <div
-                            class="invalid-feedback"
-                            *ngIf="isFieldInvalid('firstName')">
-                            {{ getFieldError('firstName') }}
-                        </div>
-                    </div>
-                </div>
+                <app-form-input
+                    title="First Name"
+                    [isRequired]="true"
+                    formControlName="firstName"
+                    [errorMessages]="{ required: 'First name is required' }">
+                </app-form-input>
             </div>
 
             <!-- Last Name -->
             <div class="col-sm-6 col-6 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    Last Name<span>*</span>
-                </div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            formControlName="lastName"
-                            (blur)="markFieldAsTouched('lastName')"
-                            [class.is-invalid]="isFieldInvalid('lastName')"/>
-                        <div
-                            class="invalid-feedback"
-                            *ngIf="isFieldInvalid('lastName')">
-                            {{ getFieldError('lastName') }}
-                        </div>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Last Name"
+                    [isRequired]="true"
+                    formControlName="lastName"
+                    [errorMessages]="{ required: 'Last name is required' }">
+                </app-form-input>
             </div>
 
             <!-- Email Address -->
             <div class="col-sm-6 col-6 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    Email Address<span>*</span>
-                </div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="email"
-                            class="form-control"
-                            formControlName="email"
-                            (blur)="markFieldAsTouched('email')"
-                            [class.is-invalid]="isFieldInvalid('email')"/>
-                        <div
-                            class="invalid-feedback"
-                            *ngIf="isFieldInvalid('email')">
-                            {{ getFieldError('email') }}
-                        </div>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Email Address"
+                    type="email"
+                    [isRequired]="true"
+                    formControlName="email"
+                    [errorMessages]="{ required: 'Email address is required', email: 'Please enter a valid email address' }">
+                </app-form-input>
             </div>
 
             <!-- Phone Number -->
             <div class="col-sm-6 col-6 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    Phone Number
-                </div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            formControlName="phone"
-                            (blur)="markFieldAsTouched('phone')"/>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Phone Number"
+                    type="text"
+                    formControlName="phone"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Desired Destination -->
             <div class="col-12 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    Desired Destination
-                </div>
-                <div class="w-100">
-                    <div class="mb-3 position-relative">
-                        <input
-                            #destinationInput
-                            type="text"
-                            id="destin"
-                            class="form-control"
-                            formControlName="desDestination"
-                            (focus)="onDestinationFocus()"
-                            (keydown)="onDestinationKeyDown($event)"
-                            (blur)="onDestinationBlur()"
-                            (keydown.escape)="showPredictions = false"
-                            autocomplete="off"/>
-
+                <app-form-input
+                    title="Desired Destination"
+                    placeholder="Start typing a city or destination..."
+                    formControlName="desDestination"
+                    autocomplete="off"
+                    wrapperClass="position-relative"
+                    [showErrors]="false"
+                    (inputFocus)="onDestinationFocus()"
+                    (inputKeydown)="onDestinationKeyDown($event)"
+                    (inputBlur)="onDestinationBlur()">
+                    <div afterInput>
                         <!-- Autocomplete Predictions Dropdown -->
-                        <div 
-                            *ngIf="showPredictions && placePredictions.length > 0" 
+                        <div
+                            *ngIf="showPredictions && placePredictions.length > 0"
                             class="autocomplete-dropdown position-absolute w-100 bg-white rounded-bottom shadow-sm">
-                            <div 
-                                *ngFor="let prediction of placePredictions; let i = index" 
+                            <div
+                                *ngFor="let prediction of placePredictions; let i = index"
                                 class="autocomplete-item px-3 py-2 cursor-pointer"
                                 [class.selected]="selectedPredictionIndex === i"
                                 (mousedown)="onPlaceSelected(prediction)"
                                 (mouseenter)="selectedPredictionIndex = i">
-                                 <div class="flex-grow-1">
-                                        <div class="fw-semibold text-dark">{{ prediction.structured_formatting.main_text }}</div>
-                                        <div class="text-muted small">{{ prediction.structured_formatting.secondary_text }}</div>
-                                    </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold text-dark">{{ prediction.structured_formatting.main_text }}</div>
+                                    <div class="text-muted small">{{ prediction.structured_formatting.secondary_text }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </app-form-input>
             </div>
 
             <!-- Other Areas -->
             <div class="col-12 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    If you are open to other locations, please list the areas you would like to consider:
-                </div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            formControlName="otherArea"/>
-                    </div>
-                </div>
+                <app-form-input
+                    title="If you are open to other locations, please list the areas you would like to consider:"
+                    formControlName="otherArea"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Arrival Date -->
@@ -179,7 +126,7 @@
                             <input
                                 type="text"
                                 placeholder="MM/DD/YYYY"
-                                class="form-control"
+                                class="form-control datepicker-control"
                                 formControlName="arrival"
                                 bsDatepicker
                                 [bsConfig]="bsConfig"
@@ -211,7 +158,7 @@
                             <input
                                 type="text"
                                 placeholder="MM/DD/YYYY"
-                                class="form-control"
+                                class="form-control datepicker-control"
                                 formControlName="departure"
                                 bsDatepicker
                                 [bsConfig]="departureConfig"
@@ -240,83 +187,58 @@
 
             <!-- Total Guests -->
             <div class="col-sm-6 col-6 col-md-4 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    Total Guests<span>*</span>
-                </div>
-                <div class="w-100">
-                    <div class="mb-3 bg-white">
-                        <input
-                            type="number"
-                            class="form-control"
-                            formControlName="totalGuests"
-                            (blur)="markFieldAsTouched('totalGuests')"
-                            min="1"
-                            [class.is-invalid]="isFieldInvalid('totalGuests')"/>
-                        <div
-                            class="invalid-feedback"
-                            *ngIf="isFieldInvalid('totalGuests')">
-                            {{ getFieldError('totalGuests') }}
-                        </div>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Total Guests"
+                    type="number"
+                    [isRequired]="true"
+                    formControlName="totalGuests"
+                    [min]="1"
+                    [errorMessages]="{ required: 'Total guests is required', min: 'Minimum 1 guest is required' }">
+                </app-form-input>
             </div>
 
             <!-- Alternate Dates -->
             <div class="col-12 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    If your dates are flexible, enter the alternate dates here.
-                </div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="text"
-                            id="altDates"
-                            class="form-control"
-                            formControlName="altDates"/>
-                    </div>
-                </div>
+                <app-form-input
+                    title="If your dates are flexible, enter the alternate dates here."
+                    type="text"
+                    id="altDates"
+                    formControlName="altDates"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Adults -->
             <div class="col-sm-6 col-6 col-md-4 d-flex flex-column">
-                <div class="w-100 lbl title-color">Adults</div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="number"
-                            class="form-control"
-                            formControlName="adults"
-                            min="0"/>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Adults"
+                    type="number"
+                    formControlName="adults"
+                    [min]="0"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Kids -->
             <div class="col-sm-6 col-6 col-md-4 d-flex flex-column">
-                <div class="w-100 lbl title-color">Kids 3 - 16 years</div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="number"
-                            class="form-control"
-                            formControlName="kids"
-                            min="0"/>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Kids 3 - 16 years"
+                    type="number"
+                    formControlName="kids"
+                    [min]="0"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Babies -->
             <div class="col-sm-6 col-6 col-md-4 d-flex flex-column">
-                <div class="w-100 lbl title-color">Babies Under 3 Years</div>
-                <div class="w-100">
-                    <div class="mb-3">
-                        <input
-                            type="number"
-                            class="form-control"
-                            formControlName="babies"
-                            min="0"/>
-                    </div>
-                </div>
+                <app-form-input
+                    title="Babies Under 3 Years"
+                    type="number"
+                    formControlName="babies"
+                    [min]="0"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Minimum Bedrooms -->
@@ -355,17 +277,13 @@
 
             <!-- Total MAX Budget -->
             <div class="col-sm-6 col-6 col-md-4 d-flex flex-column">
-                <div class="w-100 lbl title-color">
-                    Total MAX Budget
-                </div>
-                <div class="w-100">
-                    <input
-                        type="text"
-                        placeholder="Budget"
-                        class="form-control"
-                        formControlName="budgets"
-                        (blur)="markFieldAsTouched('budgets')"/>
-                </div>
+                <app-form-input
+                    title="Total MAX Budget"
+                    type="text"
+                    placeholder="Budget"
+                    formControlName="budgets"
+                    [showErrors]="false">
+                </app-form-input>
             </div>
 
             <!-- Proximity to Beach -->

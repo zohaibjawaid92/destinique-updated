@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { NgxSpinnerService } from "ngx-spinner";
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { CrudService } from "src/app/shared/services/crud.service";
@@ -98,7 +98,6 @@ export class ContactUsComponent implements OnInit, AfterViewInit, OnDestroy {
   departureMinDate: Date | undefined = undefined;
 
   // Google Places Autocomplete
-  @ViewChild('destinationInput', { static: false }) destinationInput!: ElementRef<HTMLInputElement>;
   placePredictions: PlacePrediction[] = [];
   showPredictions = false;
   selectedPredictionIndex = -1;

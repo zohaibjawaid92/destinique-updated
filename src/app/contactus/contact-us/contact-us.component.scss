@@ -87,7 +87,10 @@ h2 {
     margin-bottom: 3rem;
     border: 1px solid #ddd;
 }
-.contact-form input, .multiselect-dropdown span.dropdown-btn, .contact-form select, .contact-form textArea {
+.contact-form select,
+.contact-form textarea,
+/* Keep styling for datepicker inputs (these are not using app-form-input yet) */
+.contact-form .datepicker-control {
     background-color: #fff !important;
     border-color: #E0E0E0 !important;
     border-width: 1px !important;
@@ -102,7 +105,6 @@ h2 {
     padding-inline-end: 12px !important;
     padding-inline-start: 12px !important;
     accent-color: #378f86;
-
 }
 .dropdown-toggle::after {
     content: none;
@@ -146,18 +148,6 @@ h2 {
     text-transform: uppercase;
     line-height: 1.5rem;
     letter-spacing: .1em;
-}
-.invalid-feedback {
-    font-size: 0.9rem;
-    display: none;
-    width: 100%;
-    margin-top: .25rem;
-    color: #dc3545;
-}
-.form-control {
-    color: #000000;
-    font-size: 1rem;
-    border: 1px solid #002245;
 }
 .no-border {
     border: none;
@@ -276,22 +266,6 @@ a.collapsed {
     color: #6fccc2;
     text-decoration: underline;
 }
-.opt-in-text-s input {
-    background-color: #fff !important;
-    border-color: #E0E0E0 !important;
-    border-width: 1px !important;
-    border-radius: 0 !important;
-    padding: .75rem .75rem .5rem .75rem !important;
-    font-size: 1rem !important;
-    line-height: 1.5rem !important;
-    font-weight: 400 !important;
-    letter-spacing: 1px !important;
-    padding-block-end: 8px !important;
-    padding-block-start: 12px !important;
-    padding-inline-end: 12px !important;
-    padding-inline-start: 12px !important;
-    accent-color: #378f86;
-}
 .email-consent .collapse:not(.show) {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -301,11 +275,6 @@ a.collapsed {
     max-width: calc(100% - 90px);
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-
-/* Form validation styles */
-.is-invalid {
-  border-color: #dc3545 !important;
 }
 
 /* Checkbox label styling */

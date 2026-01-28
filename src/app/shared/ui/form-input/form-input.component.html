@@ -1,0 +1,37 @@
+<div class="app-form-input w-100" [ngClass]="containerClass">
+  <div class="w-100 lbl title-color" [ngClass]="labelClass">
+    {{ title }}
+    <span *ngIf="isRequired" class="required-asterisk">*</span>
+  </div>
+
+  <div class="w-100">
+    <div class="mb-3" [ngClass]="wrapperClass">
+      <input
+        class="form-control"
+        [ngClass]="inputClass"
+        [id]="id || formControlName"
+        [type]="type"
+        [placeholder]="placeholder"
+        [formControlName]="formControlName"
+        [attr.autocomplete]="autocomplete || null"
+        [attr.inputmode]="inputMode || null"
+        [attr.maxlength]="maxLength ?? null"
+        [attr.min]="min ?? null"
+        [attr.max]="max ?? null"
+        [attr.step]="step ?? null"
+        [readonly]="readonly"
+        [class.is-invalid]="showErrors && isInvalid"
+        (focus)="inputFocus.emit($event)"
+        (keydown)="inputKeydown.emit($event)"
+        (blur)="markTouched(); inputBlur.emit($event)"
+      />
+
+      <ng-content select="[afterInput]"></ng-content>
+
+      <div class="invalid-feedback" *ngIf="showErrors && isInvalid">
+        {{ errorText }}
+      </div>
+    </div>
+  </div>
+</div>
+
