@@ -9,7 +9,7 @@ dist/
 tmp/
 out-tsc/
 *.tsbuildinfo
-
+.angular/
 # IDE
 .idea/
 .vscode/
