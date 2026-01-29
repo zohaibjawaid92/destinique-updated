@@ -1,0 +1,568 @@
+// ============================================
+// Variables
+// ============================================
+$primary-color: #378f86;
+$secondary-color: #33d286;
+$text-color: #000;
+$border-color: #dee2e6;
+
+// Form controls
+.form-control {
+  background-color: #fff !important;
+  border-color: #dcdcdc !important;
+  border-width: 1px !important;
+  border-radius: 0 !important;
+  padding: .75rem .75rem .5rem .75rem !important;
+  font-size: 15px !important;
+  line-height: 1.5rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 1px !important;
+  padding-block-end: 8px !important;
+  padding-block-start: 12px !important;
+  padding-inline-end: 12px !important;
+  padding-inline-start: 12px !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.required:after {
+  content: "*";
+  color: red;
+}
+
+// ============================================
+// Modal Styles
+// ============================================
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+
+  &-dialog {
+    max-width: 500px;
+    margin: 0rem auto;
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+    max-width: fit-content;
+  }
+
+  &-content {
+    width: fit-content;
+    background-color: #fff;
+    max-height: 100vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, .3);
+    border-radius: 0px;
+    border: 0px solid !important;
+  }
+
+  &-header {
+    background-color: $primary-color;
+    color: #fff;
+    padding: .8rem 1rem .8rem 3rem;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  &-body {
+    padding: 2rem 3rem !important;
+  }
+
+  .checkout-summary h6 {
+    color: #62646a !important;
+  }
+
+  label {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 15px;
+    text-transform: uppercase;
+    line-height: 1.5rem;
+    letter-spacing: .1em;
+  }
+}
+
+
+/* ===== CALENDAR OPTIMIZATIONS ===== */
+.calendar-section {
+  border-radius: 8px;
+  background: #fff;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== CUSTOM DATE STYLES - TARGETING custom-day-wrapper IN BOTH CALENDAR TYPES ===== */
+:host ::ng-deep {
+  /* COMMON BASE STYLES FOR ALL CUSTOM-DAY-WRAPPER ELEMENTS */
+  .custom-day-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0px !important;
+    border: 1px solid transparent !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: default !important;
+    z-index: 1;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    /* AVAILABLE DATES - GREEN (FULLY GREEN) */
+    &.date-fully-available {
+      background-color: #28a745 !important;
+      color: white !important;
+      border-color: #28a745 !important;
+      cursor: pointer !important;
+
+      &.disabled {
+        background-color: #dc3545 !important;
+        color: white !important;
+        cursor: not-allowed !important;
+      }
+
+      &:not(.disabled):hover {
+        background-color: #218838 !important;
+        border-color: #1e7e34 !important;
+        transform: scale(1.05) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+      }
+    }
+
+    &.in-range {
+      background-color: rgba(40, 167, 69, 0.3) !important;
+    }
+
+    &.range-edge {
+      background-color: #28a745 !important;
+      color: white !important;
+      border-radius: 50% !important;
+    }
+
+    &.prefilled-date {
+      border: 2px solid #ffc107 !important; // Yellow border for pre-filled dates
+      box-shadow: 0 0 5px rgba(255, 193, 7, 0.5) !important;
+    }
+
+    &.past-date {
+      background-color: #f8f9fa !important;
+      color: #212529 !important;
+      border-color: #f8f9fa !important;
+      cursor: not-allowed !important;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    &.past-date:hover {
+      background-color: #dc3545 !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  /* Style for DUAL CALENDAR (availability tab) */
+  .custom-datepicker {
+    /* Ensure proper sizing of date cells */
+    .ngb-dp-day {
+      width: 40px;
+      height: 40px;
+      padding: 2px;
+
+      /* Center content in the cell */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Ensure week rows have proper height */
+    .ngb-dp-week {
+      min-height: 40px;
+      min-width: 40px;
+    }
+
+    /* Override Bootstrap's default datepicker styles */
+    .btn-light {
+      background-color: transparent !important;
+      border-color: transparent !important;
+    }
+    .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
+      width: 40px;
+      height: 40px;
+      font-style: normal;
+      color: #555;
+    }
+    .ngb-dp-weekdays {
+      background-color: #fff;
+      border: 0px;
+    }
+    .ngb-dp-header, .ngb-dp-month-name {
+      background-color: #378f86;
+      color: #fff !important;
+      font-weight: 300;
+      height: 42px;
+      font-size: 18px;
+    }
+    .ngb-dp-header {
+      padding-top: .35rem;
+    }
+    .ngb-dp-navigation-chevron {
+      color: #fff !important;
+      font-weight: 300;
+    }
+    .ngb-dp-arrow {
+      width: 40px;
+      height: 40px;
+      top: -5px;
+      position: relative;
+    }
+  }
+
+  /* Style for POPUP DATEPICKER (date range picker) */
+  ngb-datepicker {
+    /* Target the popup datepicker */
+    .ngb-dp-day {
+      width: 40px;
+      height: 40px;
+      padding: 2px;
+
+      /* Center content in the cell */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
+    width: 40px;
+    height: 40px;
+    font-style: normal;
+    color: #555;
+  }
+  .ngb-dp-weekdays {
+    background-color: #fff;
+    border: 0px;
+  }
+  .ngb-dp-header, .ngb-dp-month-name {
+    background-color: #378f86;
+    color: #fff !important;
+    font-weight: 300;
+    height: 42px;
+  }
+  .ngb-dp-navigation-chevron {
+    color: #fff !important;
+    font-weight: 300;
+  }
+  .ngb-dp-arrow {
+    width: 40px;
+    height: 40px;
+    top: -5px;
+    position: relative;
+  }
+}
+
+/* LEGEND STYLES */
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  flex-shrink: 0;
+
+  &.fully-available {
+    background-color: #28a745;
+  }
+
+  &.fully-unavailable {
+    background-color: #dc3545;
+  }
+
+  &.am-only {
+    background: linear-gradient(to right bottom, #28a745 50%, #e63946 50%) !important;
+  }
+
+  &.pm-only {
+    background: linear-gradient(to right bottom, #e63946 50%, #28a745 50%);
+  }
+
+  &.no-checkin {
+    background-color: #28a745;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #dc3545;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  :host ::ng-deep {
+    .custom-datepicker,
+    ngb-datepicker {
+      .ngb-dp-day {
+        width: 40px;
+        height: 40px;
+      }
+
+      .custom-day-wrapper {
+        font-size: 0.8125rem !important;
+
+        &::after {
+          font-size: 0.5rem !important;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep {
+    .custom-datepicker,
+    ngb-datepicker {
+
+      /* Slightly tighter but readable cells */
+      .ngb-dp-day {
+        width: 40px;
+        height: 40px;
+        padding: 1px;
+      }
+
+      /* Base day styling */
+      .custom-day-wrapper {
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        line-height: 1;
+        transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+        &::after {
+          font-size: 0.45rem !important;
+        }
+      }
+
+      /* ===== RANGE BACKGROUND ===== */
+      .custom-day-wrapper.in-range {
+        background-color: rgba(40, 167, 69, 0.4) !important;
+      }
+
+      /* ===== RANGE START / END ===== */
+      .custom-day-wrapper.range-start,
+      .custom-day-wrapper.range-end {
+        background-color: #28a745 !important;
+        color: #fff !important;
+        border-radius: 50% !important;
+        font-weight: 700 !important;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.35);
+      }
+
+      /* ===== ACTIVE TAP FEEDBACK ===== */
+      .custom-day-wrapper:active {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.45);
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .calendar-section {
+    min-height: 280px;
+    padding: 0.75rem;
+  }
+
+  :host ::ng-deep {
+    .custom-datepicker,
+    ngb-datepicker {
+      .ngb-dp-day {
+        width: 40px;
+        height: 40px;
+      }
+
+      .custom-day-wrapper {
+        font-size: 0.7rem !important;
+
+        &::after {
+          font-size: 0.4rem !important;
+        }
+      }
+    }
+  }
+}
+// ============================================
+// Variables
+// ============================================
+$primary-color: #378f86;
+$secondary-color: #33d286;
+$text-color: #000;
+$border-color: #dee2e6;
+$nav-tab-color: #95979d;
+
+// ============================================
+// Mixins
+// ============================================
+@mixin transition($property: all, $duration: 0.3s, $timing: ease-in-out) {
+    transition: $property $duration $timing;
+}
+
+@mixin mobile {
+    @media screen and (max-width: 767px) {
+        @content;
+    }
+}
+// Button styles
+.btn {
+    background-color: $primary-color;
+    border: none;
+    color: #fff;
+    border-color: $primary-color !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    border-radius: unset;
+    padding: 10px 12px;
+    box-shadow: 0 2px 6px 1px #1414147a;
+    @include transition;
+
+    &:hover {
+        background-color: #000;
+        color: $secondary-color;
+    }
+}
+.modal-body label {
+    font-size: .875rem;
+    line-height: 1.25rem;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+p {
+    color: #62646a;
+    font-weight: 400;
+}
+
+
+/* ===== RANGE BACKGROUND ===== */
+.custom-day-wrapper.in-range {
+  background-color: rgba(40, 167, 69, 0.35) !important;
+  color: #000 !important;
+}
+
+/* ===== RANGE START & END ===== */
+.custom-day-wrapper.range-start,
+.custom-day-wrapper.range-end {
+  background-color: #28a745 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  border-radius: 50% !important;
+  z-index: 2;
+}
+
+/* ===== CONNECT RANGE VISUALLY ===== */
+.custom-day-wrapper.in-range::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(40, 167, 69, 0.25);
+  z-index: -1;
+}
+
+/* ===== REMOVE HOVER CONFUSION ===== */
+.custom-day-wrapper.in-range:hover {
+  background-color: rgba(40, 167, 69, 0.45) !important;
+}
+
+/* ===== PREFILLED DATES ===== */
+.custom-day-wrapper.prefilled-date {
+  border: 2px dashed #ffc107 !important;
+}
+
+/*consent*/
+.opt-in-text-s {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: .6rem;
+  label {
+    display: block;
+    font-size: 12px;
+    text-transform: none;
+    font-weight: 400;
+  }
+}
+.sms-mms-consent .collapse:not(.show) {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: auto !important;
+  max-width: calc(100% - 90px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.sms-mms-consent .collapse, .email-consent .collapse {
+  float: left;
+}
+.sms-mms-consent .collapsing, .email-consent .collapsing {
+  min-height: 20px !important;
+}
+/*
+.sms-mms-consent a.collapsed:after, .email-consent a.collapsed:after {
+    content: '+ Read More';
+}
+.sms-mms-consent a:not(.collapsed):after, .email-consent a:not(.collapsed):after {
+    content: '- Read Less';
+}
+*/
+a.collapsed {
+  color: #6fccc2;
+}
+.sms-mms-consent a:hover, .sms-mms-consent a:active, .sms-mms-consent a:focus, .email-consent a:hover, .email-consent a:active, .email-consent a:focus {
+  color: #6fccc2;
+  text-decoration: underline;
+}
+.opt-in-text-s input {
+  background-color: #fff !important;
+  border-color: #E0E0E0 !important;
+  border-width: 1px !important;
+  border-radius: 0 !important;
+  padding: .75rem .75rem .5rem .75rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 1px !important;
+  padding-block-end: 8px !important;
+  padding-block-start: 12px !important;
+  padding-inline-end: 12px !important;
+  padding-inline-start: 12px !important;
+  accent-color: #378f86;
+}
+.email-consent .collapse:not(.show) {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: auto !important;
+  max-width: calc(100% - 90px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

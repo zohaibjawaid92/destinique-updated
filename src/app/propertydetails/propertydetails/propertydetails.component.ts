@@ -22,6 +22,8 @@ import { ToastrService } from "ngx-toastr";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EnvService } from "src/app/env.service";
+import { InquiryBookingFormLabelData  } from "src/app/shared/interfaces/inquiry-booking-form-label-data-interface";
+import { PropertyInquiryComponent } from 'src/app/propertydetails/property-inquiry/property-inquiry.component';
 
 interface TabInfo {
   id: string;
@@ -1056,5 +1058,33 @@ please call 850-312-5400. Thank you.`.trim();
     });
 
     // document.getElementById("bsdaterangepicker").click();
+  }
+
+  openInquiryModal(inquiryModalLabel: string): void {
+    // 1️⃣ Close current modal
+    this.modalService.dismissAll();
+    //this.closeMobileMenu(); // Close mobile menu if open
+
+    const inquiryLabelData: InquiryBookingFormLabelData = {
+      listId: this.listId,
+      formLabel: inquiryModalLabel,
+      scheckin: this.scheckin,
+      scheckout: this.scheckin,
+      totalBudget: this.rates ? this.rates.toString() : "0.00"
+    };
+
+    setTimeout(() => {
+        const modalRef = this.modalService.open(PropertyInquiryComponent,
+          {
+            size: "lg",
+            centered: true,
+            backdrop: 'static',
+            keyboard: false,
+            windowClass: 'promotion-modal-window'
+          });
+
+        modalRef.componentInstance.inquiryBookingFormLabelData = inquiryLabelData;
+        //this.cdr.detectChanges();  // Trigger change detection
+    });
   }
 }
