@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/interfaces/advanced-filter-options.interface';
 import { SearchStateService } from 'src/app/shared/services/search-state.service';
+import { PropertyService } from 'src/app/shared/services/property.service';
+import { UserRoleService } from 'src/app/shared/services/user-role.service';
 
 @Component({
   selector: 'app-advanced-search',
   templateUrl: './advanced-search.component.html',
   styleUrls: ['./advanced-search.component.scss']
 })
-export class AdvancedSearchComponent {
+export class AdvancedSearchComponent implements OnInit {
   showMoreViewTypes = false;
 
   advanceFilterForm: FormGroup;
@@ -34,26 +36,15 @@ export class AdvancedSearchComponent {
     { name: 'TheTopVillas', id: '43' },
     { name: 'Vrbo', id: '44' }
   ];
-
-  readonly propertyTypeOptions: FilterOption[] = [
-    { name: 'Condo', id: 'condo' },
-    { name: 'Private Home', id: 'private-home' },
-    { name: 'Town Home', id: 'town-home' },
-    { name: 'Chalet', id: 'chalet' }
-  ];
-
-  readonly viewTypeOptions: FilterOption[] = [
-    { name: 'Gulf-Front/Ocean-Front View', id: 'gulf-front' },
-    { name: 'Pool View', id: 'pool' },
-    { name: 'Wooded View', id: 'wooded' },
-    { name: 'Lake Front View', id: 'lake-front' },
-    { name: 'City/Community View', id: 'city' },
-    { name: 'Partial Gulf/Ocean View', id: 'partial-gulf' }
-  ];
+  
+  propertyTypeOptions: FilterOption[] = [];
+  viewTypeOptions: FilterOption[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private searchState: SearchStateService
+    private searchState: SearchStateService,
+    private propertyService: PropertyService,
+    private userRoleService: UserRoleService
   ) {
     this.advanceFilterForm = this.fb.group({
       bedrooms: [null as number | null],
@@ -64,6 +55,17 @@ export class AdvancedSearchComponent {
       petFriendly: [false],
       amenity: this.fb.array([]),
       providers: this.fb.array([])
+    });
+  }
+
+  get showProviders(): boolean {
+    return this.userRoleService.isAdmin();
+  }
+
+  ngOnInit(): void {
+    this.propertyService.getFilterOptions().subscribe(({ propertyTypes, viewTypes }) => {
+      this.propertyTypeOptions = propertyTypes;
+      this.viewTypeOptions = viewTypes;
     });
   }
 
