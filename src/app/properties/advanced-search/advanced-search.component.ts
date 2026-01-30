@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/interfaces/advanced-filter-options.interface';
 import { SearchStateService } from 'src/app/shared/services/search-state.service';
@@ -11,6 +11,8 @@ import { UserRoleService } from 'src/app/shared/services/user-role.service';
   styleUrls: ['./advanced-search.component.scss']
 })
 export class AdvancedSearchComponent implements OnInit {
+  @ViewChild('viewTypeMoreEl') viewTypeMoreEl?: ElementRef<HTMLDivElement>;
+
   showMoreViewTypes = false;
 
   advanceFilterForm: FormGroup;
@@ -97,6 +99,11 @@ export class AdvancedSearchComponent implements OnInit {
 
   toggleShowMoreViewTypes(): void {
     this.showMoreViewTypes = !this.showMoreViewTypes;
+    if (this.showMoreViewTypes && this.viewTypeMoreEl?.nativeElement) {
+      setTimeout(() => {
+        this.viewTypeMoreEl!.nativeElement.scrollTop = 0;
+      }, 0);
+    }
   }
 
   changeBedrooms(delta: number): void {

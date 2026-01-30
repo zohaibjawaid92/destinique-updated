@@ -75,16 +75,17 @@
       </div>
     </div>
 
-    <!-- Column 4: View Type (default: first 2; Show More reveals rest) -->
     <div class="col-12 col-md-6 col-lg-3">
       <div class="advanced-search-section">
         <label class="advanced-search-group-label">View Type</label>
-        <div class="form-check" *ngFor="let option of viewTypeOptions.slice(0, 2)">
-          <input type="checkbox" class="form-check-input" [id]="'view-' + option.id" [checked]="isSelectedIn(viewTypesArray, option.name)" (change)="toggleViewType(option.name)"/>
-          <label class="form-check-label" [for]="'view-' + option.id">{{ option.name }}</label>
+        <div *ngIf="!showMoreViewTypes">
+          <div class="form-check" *ngFor="let option of viewTypeOptions.slice(0, 2)">
+            <input type="checkbox" class="form-check-input" [id]="'view-' + option.id" [checked]="isSelectedIn(viewTypesArray, option.name)" (change)="toggleViewType(option.name)"/>
+            <label class="form-check-label" [for]="'view-' + option.id">{{ option.name }}</label>
+          </div>
         </div>
-        <div class="view-type-more" [class.expanded]="showMoreViewTypes">
-          <div class="form-check" *ngFor="let option of viewTypeOptions.slice(2)">
+        <div #viewTypeMoreEl class="view-type-more" [class.expanded]="showMoreViewTypes">
+          <div class="form-check" *ngFor="let option of viewTypeOptions">
             <input type="checkbox" class="form-check-input" [id]="'view-' + option.id" [checked]="isSelectedIn(viewTypesArray, option.name)" (change)="toggleViewType(option.name)"/>
             <label class="form-check-label" [for]="'view-' + option.id">{{ option.name }}</label>
           </div>

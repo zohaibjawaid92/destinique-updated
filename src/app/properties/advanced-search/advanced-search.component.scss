@@ -99,8 +99,10 @@
   transition: max-height 0.25s ease-out;
 
   &.expanded {
-    max-height: 220px;
-    overflow: visible;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
