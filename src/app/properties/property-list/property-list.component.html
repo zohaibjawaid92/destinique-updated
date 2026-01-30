@@ -27,7 +27,7 @@
           </svg>
         </button>
         <div class="dropdown-menu dropdown-menu-center bg-white advance-search-modal" [class.show]="advancedSearchOpen">
-          <app-advanced-search></app-advanced-search>
+          <app-advanced-search (filterApplied)="closeAdvancedSearch()"></app-advanced-search>
         </div>
       </div>
 

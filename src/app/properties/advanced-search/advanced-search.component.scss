@@ -1,11 +1,11 @@
 // Advanced Search form – layout and clarity (parent .advance-search-modal provides teal/green theme)
 .advanced-search-form {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
   min-width: 280px;
 }
 
 .advanced-search-section {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
 
   &:last-child {
     margin-bottom: 0;
@@ -16,7 +16,7 @@
 .bathroom-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .advanced-search-label {
@@ -24,10 +24,6 @@
   font-size: 1rem;
   color: #333;
   font-weight: 600;
-
-  strong {
-    font-size: 1rem;
-  }
 }
 
 .advanced-search-group-label {
@@ -35,13 +31,21 @@
   font-size: 1rem;
   font-weight: 700;
   color: #333;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .stepper-buttons {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
+}
+
+.stepper-value {
+  min-width: 2.5rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
 }
 
 .btn-circle {
@@ -70,7 +74,7 @@
 }
 
 .form-check {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 
   .form-check-input {
     border: 1px solid #777;
@@ -93,7 +97,8 @@
   }
 }
 
-.view-type-more {
+.view-type-more,
+.providers-more {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.25s ease-out;
@@ -107,7 +112,7 @@
 }
 
 .show-more-btn {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   background-color: #378f86 !important;
   border-color: #378f86 !important;
   color: #fff !important;
@@ -126,7 +131,7 @@
 }
 
 .advanced-search-divider {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -135,7 +140,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 

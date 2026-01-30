@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/interfaces/advanced-filter-options.interface';
 import { SearchStateService } from 'src/app/shared/services/search-state.service';
@@ -12,8 +12,11 @@ import { UserRoleService } from 'src/app/shared/services/user-role.service';
 })
 export class AdvancedSearchComponent implements OnInit {
   @ViewChild('viewTypeMoreEl') viewTypeMoreEl?: ElementRef<HTMLDivElement>;
+  @ViewChild('providersMoreEl') providersMoreEl?: ElementRef<HTMLDivElement>;
+  @Output() filterApplied = new EventEmitter<void>();
 
   showMoreViewTypes = false;
+  showMoreProviders = false;
 
   advanceFilterForm: FormGroup;
 
@@ -41,6 +44,9 @@ export class AdvancedSearchComponent implements OnInit {
   
   propertyTypeOptions: FilterOption[] = [];
   viewTypeOptions: FilterOption[] = [];
+
+  /** Last applied form snapshot; used to block submit when nothing changed. */
+  private lastAppliedSnapshot: AdvanceFilterSnapshot | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -106,6 +112,15 @@ export class AdvancedSearchComponent implements OnInit {
     }
   }
 
+  toggleShowMoreProviders(): void {
+    this.showMoreProviders = !this.showMoreProviders;
+    if (this.showMoreProviders && this.providersMoreEl?.nativeElement) {
+      setTimeout(() => {
+        this.providersMoreEl!.nativeElement.scrollTop = 0;
+      }, 0);
+    }
+  }
+
   changeBedrooms(delta: number): void {
     const control = this.advanceFilterForm.get('bedrooms');
     const current = control?.value ?? 0;
@@ -159,6 +174,10 @@ export class AdvancedSearchComponent implements OnInit {
   onApplyFilter(event: Event): void {
     event.preventDefault();
     const raw = this.advanceFilterForm.getRawValue();
+    const snapshot = this.getFormSnapshot(raw);
+    if (this.lastAppliedSnapshot !== null && this.isSameSnapshot(snapshot, this.lastAppliedSnapshot)) {
+      return;
+    }
     const bedrooms = raw.bedrooms;
     const bathrooms = raw.bathrooms;
     this.searchState.updateAdvancedFilters({
@@ -171,6 +190,30 @@ export class AdvancedSearchComponent implements OnInit {
       searchExact: !!raw.searchExact,
       petFriendly: !!raw.petFriendly
     });
+    this.lastAppliedSnapshot = snapshot;
+    this.filterApplied.emit();
+  }
+
+  private getFormSnapshot(raw: ReturnType<FormGroup['getRawValue']>): AdvanceFilterSnapshot {
+    const norm = (v: unknown) => (v == null || v === '' || Number(v) === 0 ? null : Number(v));
+    const arr = (a: unknown) => (Array.isArray(a) ? [...a].sort() : []);
+    return {
+      bedrooms: norm(raw.bedrooms),
+      bathrooms: norm(raw.bathrooms),
+      searchExact: !!raw.searchExact,
+      petFriendly: !!raw.petFriendly,
+      amenity: arr(raw.amenity),
+      providers: arr(raw.providers),
+      propertyTypes: arr(raw.propertyTypes),
+      viewTypes: arr(raw.viewTypes)
+    };
+  }
+
+  private isSameSnapshot(a: AdvanceFilterSnapshot, b: AdvanceFilterSnapshot): boolean {
+    if (a.bedrooms !== b.bedrooms || a.bathrooms !== b.bathrooms) return false;
+    if (a.searchExact !== b.searchExact || a.petFriendly !== b.petFriendly) return false;
+    const eq = (x: string[], y: string[]) => x.length === y.length && x.every((v, i) => v === y[i]);
+    return eq(a.amenity, b.amenity) && eq(a.providers, b.providers) && eq(a.propertyTypes, b.propertyTypes) && eq(a.viewTypes, b.viewTypes);
   }
 
   onReset(): void {
@@ -184,6 +227,18 @@ export class AdvancedSearchComponent implements OnInit {
     this.viewTypesArray.clear();
     this.amenityArray.clear();
     this.providersArray.clear();
+    this.lastAppliedSnapshot = null;
     this.searchState.resetFilters();
   }
+}
+
+interface AdvanceFilterSnapshot {
+  bedrooms: number | null;
+  bathrooms: number | null;
+  searchExact: boolean;
+  petFriendly: boolean;
+  amenity: string[];
+  providers: string[];
+  propertyTypes: string[];
+  viewTypes: string[];
 }

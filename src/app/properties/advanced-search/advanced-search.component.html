@@ -1,17 +1,16 @@
 <form class="advanced-search-form" [formGroup]="advanceFilterForm" (ngSubmit)="onApplyFilter($event)">
-  <div class="row g-3">
+  <div class="row g-2">
     <!-- Column 1: Bedrooms, Bathrooms, Checkboxes -->
     <div class="col-12 col-md-6 col-lg-3">
       <div class="advanced-search-section bedroom-section">
-        <span class="advanced-search-label">
-          <strong>{{ bedroomsLabel }}</strong> Bedrooms
-        </span>
+        <span class="advanced-search-label">Bedrooms</span>
         <div class="stepper-buttons">
           <button type="button" class="btn btn-primary btn-circle stepper-btn" aria-label="Decrease bedrooms" (click)="changeBedrooms(-1)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
             </svg>
           </button>
+          <span class="stepper-value">{{ bedroomsLabel }}</span>
           <button type="button" class="btn btn-primary btn-circle stepper-btn" aria-label="Increase bedrooms" (click)="changeBedrooms(1)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -20,15 +19,14 @@
         </div>
       </div>
       <div class="advanced-search-section bathroom-section">
-        <span class="advanced-search-label">
-          <strong>{{ bathroomsLabel }}</strong> Bathrooms
-        </span>
+        <span class="advanced-search-label">Bathrooms</span>
         <div class="stepper-buttons">
           <button type="button" class="btn btn-primary btn-circle stepper-btn" aria-label="Decrease bathrooms" (click)="changeBathrooms(-1)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
             </svg>
           </button>
+          <span class="stepper-value">{{ bathroomsLabel }}</span>
           <button type="button" class="btn btn-primary btn-circle stepper-btn" aria-label="Increase bathrooms" (click)="changeBathrooms(1)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
@@ -36,11 +34,11 @@
           </button>
         </div>
       </div>
-      <div class="form-check mt-3">
+      <div class="form-check mt-2">
         <input type="checkbox" class="form-check-input" id="searchExact" formControlName="searchExact"/>
         <label class="form-check-label" for="searchExact">Search Exact</label>
       </div>
-      <div class="form-check mt-3">
+      <div class="form-check mt-2">
         <input type="checkbox" class="form-check-input" id="petFriendly" formControlName="petFriendly"/>
         <label class="form-check-label" for="petFriendly">Pet Friendly</label>
       </div>
@@ -55,12 +53,23 @@
           <label class="form-check-label" [for]="'amenity-' + option.id">{{ option.name }}</label>
         </div>
       </div>
-      <div class="advanced-search-section mt-3" *ngIf="showProviders">
+      <div class="advanced-search-section mt-2" *ngIf="showProviders">
         <label class="advanced-search-group-label">Providers</label>
-        <div class="form-check" *ngFor="let option of providerOptions">
-          <input type="checkbox" class="form-check-input" [id]="'provider-' + option.id" [checked]="isSelectedIn(providersArray, option.name)" (change)="toggleProvider(option.name)"/>
-          <label class="form-check-label" [for]="'provider-' + option.id">{{ option.name }}</label>
+        <div *ngIf="!showMoreProviders">
+          <div class="form-check" *ngFor="let option of providerOptions.slice(0, 2)">
+            <input type="checkbox" class="form-check-input" [id]="'provider-' + option.id" [checked]="isSelectedIn(providersArray, option.name)" (change)="toggleProvider(option.name)"/>
+            <label class="form-check-label" [for]="'provider-' + option.id">{{ option.name }}</label>
+          </div>
         </div>
+        <div #providersMoreEl class="providers-more" [class.expanded]="showMoreProviders">
+          <div class="form-check" *ngFor="let option of providerOptions">
+            <input type="checkbox" class="form-check-input" [id]="'provider-' + option.id" [checked]="isSelectedIn(providersArray, option.name)" (change)="toggleProvider(option.name)"/>
+            <label class="form-check-label" [for]="'provider-' + option.id">{{ option.name }}</label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary show-more-btn" (click)="toggleShowMoreProviders()">
+          {{ showMoreProviders ? 'SHOW LESS' : 'SHOW MORE' }}
+        </button>
       </div>
     </div>
 
