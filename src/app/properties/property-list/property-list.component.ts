@@ -1,5 +1,5 @@
 // property-list.component.ts
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PropertyService, PropertyResponse, Property } from 'src/app/shared/services/property.service';
@@ -14,6 +14,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class PropertyListComponent implements OnInit, OnDestroy {
   // ========== PROPERTY DATA ==========
   properties: Property[] = [];
+
+  // ========== ADVANCED SEARCH DROPDOWN ==========
+  advancedSearchOpen = false;
+  @ViewChild('advancedSearchDropdown') advancedSearchDropdown?: ElementRef<HTMLDivElement>;
   paginationInfo: any = {
     page: 1,
     pageSize: 12,
@@ -146,6 +150,22 @@ export class PropertyListComponent implements OnInit, OnDestroy {
     this.showMoreDetailsGlobal = !this.showMoreDetailsGlobal;
     if (!this.showMoreDetailsGlobal) {
       this.expandedPropertyId = null;
+    }
+  }
+
+  toggleAdvancedSearch(): void {
+    this.advancedSearchOpen = !this.advancedSearchOpen;
+  }
+
+  closeAdvancedSearch(): void {
+    this.advancedSearchOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as Node;
+    if (this.advancedSearchOpen && this.advancedSearchDropdown?.nativeElement && !this.advancedSearchDropdown.nativeElement.contains(target)) {
+      this.advancedSearchOpen = false;
     }
   }
 }

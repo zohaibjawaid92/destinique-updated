@@ -137,17 +137,23 @@ export class SearchPropertyComponent implements OnInit, OnDestroy {
    * Determine if we should perform a search with current params
    */
   private shouldSearch(params: SearchParams): boolean {
-    // At minimum, we should have either location or some other filter
+    // At minimum, we should have either location or some other filter (including advanced-search fields)
     return !!(
       params.city ||
       params.state ||
       params.locationText ||
       params.checkIn ||
       params.minBedrooms ||
+      params.minBathrooms ||
       params.minGuests ||
       params.minPrice ||
       params.maxPrice ||
-      (params.amenities && params.amenities.length > 0)
+      (params.amenities && params.amenities.length > 0) ||
+      (params.providers && params.providers.length > 0) ||
+      (params.propertyTypes && params.propertyTypes.length > 0) ||
+      (params.viewTypes && params.viewTypes.length > 0) ||
+      params.searchExact ||
+      params.petFriendly
     );
   }
 

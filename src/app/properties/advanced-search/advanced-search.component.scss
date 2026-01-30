@@ -1,0 +1,174 @@
+// Advanced Search form – layout and clarity (parent .advance-search-modal provides teal/green theme)
+.advanced-search-form {
+  padding: 1rem 1.25rem;
+  min-width: 280px;
+}
+
+.advanced-search-section {
+  margin-bottom: 1.25rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.bedroom-section,
+.bathroom-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.advanced-search-label {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+
+  strong {
+    font-size: 1rem;
+  }
+}
+
+.advanced-search-group-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.stepper-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-circle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #378f86 !important;
+  border-color: #378f86 !important;
+  color: #fff !important;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover,
+  &:focus {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #33d286 !important;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.form-check {
+  margin-bottom: 0.5rem;
+
+  .form-check-input {
+    border: 1px solid #777;
+    border-radius: 4px;
+    accent-color: #378f86;
+    cursor: pointer;
+
+    &:checked {
+      background-color: #378f86;
+      border-color: #378f86;
+    }
+  }
+
+  .form-check-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #444;
+    cursor: pointer;
+    margin-left: 0.35rem;
+  }
+}
+
+.view-type-more {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-out;
+
+  &.expanded {
+    max-height: 220px;
+    overflow: visible;
+  }
+}
+
+.show-more-btn {
+  margin-top: 0.75rem;
+  background-color: #378f86 !important;
+  border-color: #378f86 !important;
+  color: #fff !important;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 0;
+
+  &:hover {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #33d286 !important;
+  }
+}
+
+.advanced-search-divider {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.advanced-search-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.apply-filter-btn {
+  background-color: #378f86 !important;
+  border-color: #378f86 !important;
+  color: #fff !important;
+  padding: 6px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 0;
+
+  &:hover {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #33d286 !important;
+  }
+}
+
+.reset-btn {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: #fff !important;
+  padding: 6px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 0;
+
+  &:hover {
+    background-color: #5a6268 !important;
+    border-color: #545b62 !important;
+    color: #fff !important;
+  }
+}

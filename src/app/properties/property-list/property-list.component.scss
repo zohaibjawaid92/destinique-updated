@@ -107,11 +107,22 @@
 }
 
 
-/*Advanced search*/
+/*Advanced search – open/close via Angular (Bootstrap JS not required) */
+.dropdown.show .dropdown-menu.show {
+  display: block;
+}
 .dropdown-menu-center {
     width: 990px;
     right: auto !important;
     transform: translate(-25%, 10%) !important;
+}
+.dropdown-menu.advance-search-modal {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    background-color: #fff;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 .advance-search-modal .btn.showMore, .advance-search-modal .float-right .btn {
     background: #378f86;
