@@ -100,12 +100,12 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
   get bedroomsLabel(): string {
     const v = this.advanceFilterForm.get('bedrooms')?.value;
-    return v == null || v === '' || v === 0 ? 'Any' : String(v);
+    return v == null || v === '' ? '0' : String(v);
   }
 
   get bathroomsLabel(): string {
     const v = this.advanceFilterForm.get('bathrooms')?.value;
-    return v == null || v === '' || v === 0 ? 'Any' : String(v);
+    return v == null || v === '' ? '0' : String(v);
   }
 
   get propertyTypesArray(): FormArray {
