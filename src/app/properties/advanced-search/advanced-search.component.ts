@@ -1,16 +1,18 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { FilterOption } from 'src/app/shared/interfaces/advanced-filter-options.interface';
 import { SearchStateService } from 'src/app/shared/services/search-state.service';
 import { PropertyService } from 'src/app/shared/services/property.service';
 import { UserRoleService } from 'src/app/shared/services/user-role.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-advanced-search',
   templateUrl: './advanced-search.component.html',
   styleUrls: ['./advanced-search.component.scss']
 })
-export class AdvancedSearchComponent implements OnInit {
+export class AdvancedSearchComponent implements OnInit, OnDestroy {
   @ViewChild('viewTypeMoreEl') viewTypeMoreEl?: ElementRef<HTMLDivElement>;
   @ViewChild('providersMoreEl') providersMoreEl?: ElementRef<HTMLDivElement>;
   @Output() filterApplied = new EventEmitter<void>();
@@ -48,6 +50,8 @@ export class AdvancedSearchComponent implements OnInit {
   /** Last applied form snapshot; used to block submit when nothing changed. */
   private lastAppliedSnapshot: AdvanceFilterSnapshot | null = null;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private searchState: SearchStateService,
@@ -75,6 +79,23 @@ export class AdvancedSearchComponent implements OnInit {
       this.propertyTypeOptions = propertyTypes;
       this.viewTypeOptions = viewTypes;
     });
+    this.searchState.state$.pipe(takeUntil(this.destroy$)).subscribe(() => this.syncNumericFiltersFromState());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Sync bedrooms and bathrooms form values from SearchStateService
+   * so stepper reflects state from search-property or previous Apply
+   */
+  private syncNumericFiltersFromState(): void {
+    const state = this.searchState.currentState;
+    const bedrooms = state.minBedrooms != null && state.minBedrooms > 0 ? state.minBedrooms : null;
+    const bathrooms = state.minBathrooms != null && state.minBathrooms > 0 ? state.minBathrooms : null;
+    this.advanceFilterForm.patchValue({ bedrooms, bathrooms }, { emitEvent: false });
   }
 
   get bedroomsLabel(): string {

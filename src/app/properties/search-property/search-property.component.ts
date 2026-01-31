@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { SearchStateService } from 'src/app/shared/services/search-state.service';
 import { GoogleMapsService, PlacePrediction, PlaceDetails } from 'src/app/shared/services/google-maps.service';
 import { Subject, from } from 'rxjs';
-import { debounceTime, filter, switchMap, takeUntil, catchError, tap } from 'rxjs/operators';
+import { debounceTime, filter, switchMap, takeUntil, catchError, tap, map, distinctUntilChanged } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router'; // Add this import
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
@@ -168,6 +168,9 @@ export class SearchPropertyComponent implements OnInit, OnDestroy {
     // Initialize form with current search state (if any)
     this.initializeFormFromState();
 
+    // Sync bedrooms dropdown when state changes (e.g. from advanced-search Apply)
+    this.syncBedroomsFromState();
+
     // Check for URL parameters
     this.initializeFromUrl();
 
@@ -206,10 +209,8 @@ export class SearchPropertyComponent implements OnInit, OnDestroy {
   private initializeFormFromState(): void {
     const state = this.searchState.currentState;
 
-    // Set bedroom filter if exists
-    if (state.minBedrooms) {
-      this.searchForm.patchValue({ bedrooms: state.minBedrooms }, { emitEvent: false });
-    }
+    // Set bedroom filter: state.minBedrooms (undefined → 0 for "BEDROOMS" / Any)
+    this.searchForm.patchValue({ bedrooms: state.minBedrooms ?? 0 }, { emitEvent: false });
 
     // Set guest filter if exists
     if (state.minGuests) {
@@ -621,6 +622,22 @@ export class SearchPropertyComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((value: number) => {
         this.updateGuestsInState(value);
+      });
+  }
+
+  /**
+   * Subscribe to state$ and keep bedrooms dropdown in sync when state changes
+   * (e.g. when user uses + / - in advanced-search and clicks Apply Filter)
+   */
+  private syncBedroomsFromState(): void {
+    this.searchState.state$
+      .pipe(
+        map(state => state.minBedrooms ?? 0),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(value => {
+        this.searchForm.patchValue({ bedrooms: value }, { emitEvent: false });
       });
   }
 
